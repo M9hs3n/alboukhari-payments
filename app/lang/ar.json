@@ -127,5 +127,21 @@
     "common.success": "نجاح",
     "common.error": "خطأ",
     "common.flash_saved": "تم الحفظ ✓",
-    "common.flash_deleted": "تم الحذف ✓"
+    "common.flash_deleted": "تم الحذف ✓",
+    "common.update": "تحديث",
+    "common.total": "الإجمالي",
+
+    "reports.today_messages": "رسائل اليوم",
+    "reports.collected_today": "محصّل اليوم",
+    "reports.collected": "محصّل",
+    "reports.overdue_now": "متأخر الآن",
+    "reports.payment_methods": "طرق الدفع",
+    "reports.monthly_collection": "التحصيل الشهري",
+    "reports.month": "الشهر",
+    "reports.cost": "التكلفة",
+    "reports.overdue_in": "متأخر في",
+    "reports.top_debtors": "أعلى المتأخرين",
+    "reports.months_behind": "أشهر متأخرة",
+    "reports.total_balance": "الرصيد الإجمالي",
+    "reports.no_serious_debtors": "لا توجد ديون كبيرة"
 }

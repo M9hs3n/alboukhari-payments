@@ -127,5 +127,21 @@
     "common.success": "Succes",
     "common.error": "Fout",
     "common.flash_saved": "Opgeslagen ✓",
-    "common.flash_deleted": "Verwijderd ✓"
+    "common.flash_deleted": "Verwijderd ✓",
+    "common.update": "Bijwerken",
+    "common.total": "Totaal",
+
+    "reports.today_messages": "Berichten vandaag",
+    "reports.collected_today": "Vandaag ontvangen",
+    "reports.collected": "Ontvangen",
+    "reports.overdue_now": "Achterstallig nu",
+    "reports.payment_methods": "Betaalmethoden",
+    "reports.monthly_collection": "Maandelijkse ontvangst",
+    "reports.month": "Maand",
+    "reports.cost": "Kosten",
+    "reports.overdue_in": "Achterstallig in",
+    "reports.top_debtors": "Grootste schuldenaars",
+    "reports.months_behind": "Maanden achterstand",
+    "reports.total_balance": "Totaalsaldo",
+    "reports.no_serious_debtors": "Geen ernstige achterstanden"
 }

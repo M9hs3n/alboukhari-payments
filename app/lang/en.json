@@ -127,5 +127,21 @@
     "common.success": "Success",
     "common.error": "Error",
     "common.flash_saved": "Saved ✓",
-    "common.flash_deleted": "Deleted ✓"
+    "common.flash_deleted": "Deleted ✓",
+    "common.update": "Update",
+    "common.total": "Total",
+
+    "reports.today_messages": "Today's messages",
+    "reports.collected_today": "Collected today",
+    "reports.collected": "Collected",
+    "reports.overdue_now": "Overdue now",
+    "reports.payment_methods": "Payment methods",
+    "reports.monthly_collection": "Monthly collection",
+    "reports.month": "Month",
+    "reports.cost": "Cost",
+    "reports.overdue_in": "Overdue in",
+    "reports.top_debtors": "Top debtors",
+    "reports.months_behind": "Months behind",
+    "reports.total_balance": "Total balance",
+    "reports.no_serious_debtors": "No serious debtors"
 }
