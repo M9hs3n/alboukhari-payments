@@ -1,5 +1,5 @@
 <div
-    x-data="studentsGrid({{ json_encode(array_values($rowsJson)) }})"
+    x-data="studentsGrid({{ json_encode(array_values($rowsJson)) }}, @js(__('actions.bulk_confirm')))"
     x-init="init()"
 >
     {{-- ====== KPI Strip ====== --}}
@@ -58,9 +58,9 @@
         <strong x-text="`${selectedIds.length} ${selectedIds.length === 1 ? '{{ __('Student') }}' : '{{ __('Students') }}'}`"></strong>
         <span style="opacity:0.7">{{ __('selected') }}</span>
         <span style="flex:1"></span>
-        <button class="btn btn-sm" @click="bulk('is_hidden', true, @js(__('confirm.bulk_hide', ['count' => '__COUNT__'])))">🙈 {{ __('actions.bulk_hide') }}</button>
-        <button class="btn btn-sm" @click="bulk('is_blocked_messages', true, @js(__('confirm.bulk_block', ['count' => '__COUNT__'])))">🚫 {{ __('actions.bulk_block') }}</button>
-        <button class="btn btn-sm" @click="bulk('is_in_person', true, @js(__('confirm.bulk_in_person', ['count' => '__COUNT__'])))">🏠 {{ __('In-person') }}</button>
+        <button class="btn btn-sm" @click="bulk('is_hidden', true)">🙈 {{ __('actions.bulk_hide') }}</button>
+        <button class="btn btn-sm" @click="bulk('is_blocked_messages', true)">🚫 {{ __('actions.bulk_block') }}</button>
+        <button class="btn btn-sm" @click="bulk('is_in_person', true)">🏠 {{ __('actions.mark_in_person') }}</button>
         <button class="btn btn-sm btn-danger" @click="clearSelection()">✕ {{ __('actions.bulk_clear') }}</button>
     </div>
 
@@ -227,16 +227,16 @@
                                     <button wire:click="$dispatch('open-send-message', { studentId: {{ $student->id }} })">📲 {{ __('actions.send_message') }}</button>
                                     <div class="divider"></div>
                                     <button wire:click="toggleFlag({{ $student->id }}, 'is_hidden')">
-                                        {{ $student->is_hidden ? '👁️ Unhide' : '🙈 Hide' }}
+                                        {{ $student->is_hidden ? '👁️ '.__('actions.unhide') : '🙈 '.__('actions.hide') }}
                                     </button>
                                     <button wire:click="toggleFlag({{ $student->id }}, 'is_blocked_messages')">
-                                        {{ $student->is_blocked_messages ? '✅ Unblock' : '🚫 Block messages' }}
+                                        {{ $student->is_blocked_messages ? '✅ '.__('actions.unblock_messages') : '🚫 '.__('actions.block_messages') }}
                                     </button>
                                     <button wire:click="toggleFlag({{ $student->id }}, 'is_in_person')">
-                                        {{ $student->is_in_person ? '🚪 Remove in-person' : '🏠 In-person' }}
+                                        {{ $student->is_in_person ? '🚪 '.__('actions.remove_in_person') : '🏠 '.__('actions.mark_in_person') }}
                                     </button>
                                     <button wire:click="toggleFlag({{ $student->id }}, 'excluded_from_send_all')">
-                                        {{ $student->excluded_from_send_all ? '✓ Include in bulk' : '🚷 Exclude bulk' }}
+                                        {{ $student->excluded_from_send_all ? '✓ '.__('actions.include_bulk') : '🚷 '.__('actions.exclude_bulk') }}
                                     </button>
                                 </div>
                             </div>
@@ -265,9 +265,10 @@
 </div>
 
 <script>
-    function studentsGrid(initialRows) {
+    function studentsGrid(initialRows, bulkConfirmTpl) {
         return {
             rows: initialRows,
+            bulkConfirmTpl: bulkConfirmTpl || 'Apply this change to :count student(s)?',
             search: '',
             clientFilter: 'all',
             sortKey: 'id',
@@ -363,8 +364,8 @@
 
             bulk(flag, value, promptTemplate) {
                 if (this.selectedIds.length === 0) return;
-                const msg = (promptTemplate || '').replace('__COUNT__', this.selectedIds.length);
-                if (msg && !confirm(msg)) return;
+                const msg = this.bulkConfirmTpl.replace(':count', this.selectedIds.length);
+                if (!confirm(msg)) return;
                 @this.bulkAction(this.selectedIds, flag, value);
                 this.clearSelection();
             },
