@@ -76,7 +76,14 @@ class StudentsGrid extends Component
     public function render()
     {
         $query = Student::query()
-            ->with(['family.students', 'payments', 'markers']);
+            ->with([
+                'family.students',
+                'payments',
+                'feeOverrides',
+                'surcharges',
+                'markers',
+                'suspensions',
+            ]);
 
         match ($this->filterStatus) {
             'hidden' => $query->where('is_hidden', true),
