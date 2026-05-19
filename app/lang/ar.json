@@ -195,5 +195,16 @@
     "campaigns.type.balance_above":  "لمن متبقي عليه أكثر من",
     "campaigns.type.specific_students":  "لطلاب محددين",
     "campaigns.type.first_friday":  "أول جمعة (تلقائي)",
-    "campaigns.type.mid_month_auto":  "15 من الشهر (تلقائي)"
+    "campaigns.type.mid_month_auto":  "15 من الشهر (تلقائي)",
+    "shortcuts.title":  "اختصارات لوحة المفاتيح",
+    "shortcuts.button_label":  "عرض اختصارات لوحة المفاتيح",
+    "shortcuts.tip":  "معظم الإجراءات لها اختصار. اضغط ؟ في أي وقت لرؤية هذه القائمة.",
+    "shortcuts.group_global":  "في كل مكان",
+    "shortcuts.group_payment":  "الدفع والإدخال السريع",
+    "shortcuts.show_dialog":  "افتح هذه النافذة",
+    "shortcuts.focus_search":  "التركيز على البحث",
+    "shortcuts.close_panels":  "إغلاق اللوحات والنوافذ المفتوحة",
+    "shortcuts.cash":  "الدفع نقداً",
+    "shortcuts.bank":  "الدفع عبر البنك",
+    "shortcuts.save_and_next":  "حفظ والانتقال للتالي"
 }

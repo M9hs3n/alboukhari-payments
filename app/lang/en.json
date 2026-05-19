@@ -195,5 +195,16 @@
     "campaigns.type.balance_above":  "Balance above",
     "campaigns.type.specific_students":  "Specific students",
     "campaigns.type.first_friday":  "First Friday (auto)",
-    "campaigns.type.mid_month_auto":  "Mid-month day 15 (auto)"
+    "campaigns.type.mid_month_auto":  "Mid-month day 15 (auto)",
+    "shortcuts.title":  "Keyboard shortcuts",
+    "shortcuts.button_label":  "Show keyboard shortcuts",
+    "shortcuts.tip":  "Most actions have a shortcut. Press ? anytime to see this list.",
+    "shortcuts.group_global":  "Anywhere",
+    "shortcuts.group_payment":  "Payment \u0026 quick entry",
+    "shortcuts.show_dialog":  "Show this dialog",
+    "shortcuts.focus_search":  "Focus search",
+    "shortcuts.close_panels":  "Close open panels and modals",
+    "shortcuts.cash":  "Pay with cash",
+    "shortcuts.bank":  "Pay by bank",
+    "shortcuts.save_and_next":  "Save and move on"
 }
