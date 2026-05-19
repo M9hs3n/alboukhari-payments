@@ -68,10 +68,13 @@ class SendSingleMessage extends Component
         try {
             $sender = app(CampaignSender::class);
             $result = $sender->sendSingle($this->studentId, $this->body, 'manual');
-            $this->resultMessage = '✓ تم الإرسال (' . $result['provider_status'] . ') — تكلفة: ' . number_format($result['cost'], 4) . '€';
+            $this->resultMessage = __('send.single_sent', [
+                'status' => (string) ($result['provider_status'] ?? ''),
+                'cost' => number_format((float) ($result['cost'] ?? 0), 4),
+            ]);
             $this->dispatch('flash', message: $this->resultMessage);
         } catch (\Throwable $e) {
-            $this->resultMessage = '✗ فشل: ' . $e->getMessage();
+            $this->resultMessage = __('send.send_failed', ['error' => $e->getMessage()]);
             $this->dispatch('flash', message: $this->resultMessage);
         }
     }

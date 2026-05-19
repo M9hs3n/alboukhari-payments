@@ -86,7 +86,7 @@ class PaymentModal extends Component
         $p = Payment::findOrFail($paymentId);
         $p->delete();
         $this->dispatch('payment-saved', studentId: $this->studentId);
-        $this->dispatch('flash', message: 'تم حذف الدفعة ✓');
+        $this->dispatch('flash', message: __('flash.payment_deleted'));
         $this->open($this->studentId, $this->year, $this->month);
     }
 
@@ -127,7 +127,7 @@ class PaymentModal extends Component
         }
 
         $this->dispatch('payment-saved', studentId: $this->studentId);
-        $this->dispatch('flash', message: 'تم حفظ الدفعة ✓');
+        $this->dispatch('flash', message: __('flash.payment_saved'));
 
         if ($next) {
             // Find next student to focus on (same month)

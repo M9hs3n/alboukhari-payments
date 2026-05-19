@@ -84,7 +84,7 @@ class StudentPanel extends Component
         $student->notes = $this->notes ?: null;
         $student->save();
 
-        $this->dispatch('flash', message: 'تم الحفظ ✓');
+        $this->dispatch('flash', message: __('common.flash_saved'));
     }
 
     public function toggleFlag(string $flag)
@@ -94,7 +94,7 @@ class StudentPanel extends Component
         $student = Student::findOrFail($this->studentId);
         $student->{$flag} = !$student->{$flag};
         $student->save();
-        $this->dispatch('flash', message: 'تم التحديث ✓');
+        $this->dispatch('flash', message: __('common.flash_updated'));
     }
 
     public function addSuspension()
@@ -115,13 +115,13 @@ class StudentPanel extends Component
         $this->suspend_starts_at = '';
         $this->suspend_ends_at = '';
         $this->suspend_reason = '';
-        $this->dispatch('flash', message: 'تم إنشاء العزل ✓');
+        $this->dispatch('flash', message: __('flash.suspension_added'));
     }
 
     public function removeSuspension(int $id)
     {
         StudentSuspension::where('id', $id)->where('student_id', $this->studentId)->delete();
-        $this->dispatch('flash', message: 'تم الحذف ✓');
+        $this->dispatch('flash', message: __('common.flash_deleted'));
     }
 
     public function addOverride()
@@ -147,13 +147,13 @@ class StudentPanel extends Component
 
         $this->override_amount = null;
         $this->override_reason = '';
-        $this->dispatch('flash', message: 'تم حفظ الرسم الخاص ✓');
+        $this->dispatch('flash', message: __('flash.fee_override_saved'));
     }
 
     public function removeOverride(int $id)
     {
         StudentMonthlyFeeOverride::where('id', $id)->where('student_id', $this->studentId)->delete();
-        $this->dispatch('flash', message: 'تم الحذف ✓');
+        $this->dispatch('flash', message: __('common.flash_deleted'));
     }
 
     public function addSurcharge()
@@ -175,13 +175,13 @@ class StudentPanel extends Component
 
         $this->surcharge_amount = null;
         $this->surcharge_reason = '';
-        $this->dispatch('flash', message: 'تم إضافة الرسم الإضافي ✓');
+        $this->dispatch('flash', message: __('flash.surcharge_added'));
     }
 
     public function removeSurcharge(int $id)
     {
         StudentSurcharge::where('id', $id)->where('student_id', $this->studentId)->delete();
-        $this->dispatch('flash', message: 'تم الحذف ✓');
+        $this->dispatch('flash', message: __('common.flash_deleted'));
     }
 
     public function openPayment(int $month)
