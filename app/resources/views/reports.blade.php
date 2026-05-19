@@ -115,7 +115,13 @@
                     @foreach ($overdue as $row)
                         <tr>
                             <td style="text-align:start;padding:6px 16px;font-weight:600">{{ $row['student']->name }}</td>
-                            <td style="font-family:ui-monospace,monospace;font-size:11px;color:var(--color-text-muted)">{{ $row['student']->phone_primary_e164 }}</td>
+                            <td style="font-family:ui-monospace,monospace;font-size:11px;color:var(--color-text-muted)">
+                                @if ($row['student']->phone_primary_e164)
+                                    <button type="button" class="copyable" title="{{ __('copy.hint') }}" aria-label="{{ __('copy.hint') }}: {{ $row['student']->phone_primary_e164 }}">{{ $row['student']->phone_primary_e164 }}</button>
+                                @else
+                                    <span class="text-soft">—</span>
+                                @endif
+                            </td>
                             <td>
                                 @php $sc = $row['status'] === 'late' ? 'pill-danger' : ($row['status'] === 'partial' ? 'pill-warning' : 'pill-muted'); @endphp
                                 <span class="pill {{ $sc }}">{{ \App\Services\MonthStatusResolver::label($row['status']) }}</span>
@@ -143,7 +149,13 @@
                 @forelse ($topDebtors as $row)
                     <tr>
                         <td style="text-align:start;padding:6px 16px;font-weight:600">{{ $row['st']->name }}</td>
-                        <td style="font-family:ui-monospace,monospace;font-size:11px;color:var(--color-text-muted)">{{ $row['st']->phone_primary_e164 }}</td>
+                        <td style="font-family:ui-monospace,monospace;font-size:11px;color:var(--color-text-muted)">
+                            @if ($row['st']->phone_primary_e164)
+                                <button type="button" class="copyable" title="{{ __('copy.hint') }}" aria-label="{{ __('copy.hint') }}: {{ $row['st']->phone_primary_e164 }}">{{ $row['st']->phone_primary_e164 }}</button>
+                            @else
+                                <span class="text-soft">—</span>
+                            @endif
+                        </td>
                         <td><span class="pill pill-warning">{{ $row['monthsBehind'] }}</span></td>
                         <td class="fw-700 text-danger">{{ number_format($row['totalBal'], 0) }} €</td>
                     </tr>

@@ -334,5 +334,8 @@
     "panel.profile.default_fee_label":  "Aangepast standaardbedrag (overschrijft globaal)",
     "panel.profile.default_fee_placeholder":  "bv. 25.00",
     "panel.profile.notes_label":  "Notities",
-    "panel.messages.empty":  "Nog geen berichten."
+    "panel.messages.empty":  "Nog geen berichten.",
+    "copy.copied":  "Gekopieerd",
+    "copy.failed":  "Kopiëren naar klembord mislukt",
+    "copy.hint":  "Klik om te kopiëren"
 }

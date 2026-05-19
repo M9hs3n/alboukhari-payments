@@ -248,8 +248,8 @@
 
                     @if ($waConfigured)
                         <div style="background:var(--color-surface-alt);padding:10px 14px;border-radius:var(--radius);font-size:12px;font-family:ui-monospace,monospace">
-                            <div><strong>Webhook URL:</strong> <code>{{ url('/webhooks/whatsapp') }}</code></div>
-                            <div class="mt-2"><strong>Verify endpoint:</strong> <code>GET {{ url('/webhooks/whatsapp') }}</code></div>
+                            <div><strong>Webhook URL:</strong> <button type="button" class="copyable" title="{{ __('copy.hint') }}" aria-label="{{ __('copy.hint') }}: {{ url('/webhooks/whatsapp') }}">{{ url('/webhooks/whatsapp') }}</button></div>
+                            <div class="mt-2"><strong>Verify endpoint:</strong> <button type="button" class="copyable" title="{{ __('copy.hint') }}" data-copy="{{ url('/webhooks/whatsapp') }}" aria-label="{{ __('copy.hint') }}: {{ url('/webhooks/whatsapp') }}">GET {{ url('/webhooks/whatsapp') }}</button></div>
                         </div>
                     @endif
                 </div>

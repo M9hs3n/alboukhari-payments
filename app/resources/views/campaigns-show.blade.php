@@ -88,7 +88,13 @@
                     <tr>
                         <td style="color:var(--color-text-muted)">{{ $r->id }}</td>
                         <td style="text-align:start;font-weight:600">{{ $r->student?->name ?? '—' }}</td>
-                        <td style="font-family:ui-monospace,monospace;font-size:11px">{{ $r->phone_e164 }}</td>
+                        <td style="font-family:ui-monospace,monospace;font-size:11px">
+                            @if ($r->phone_e164)
+                                <button type="button" class="copyable" title="{{ __('copy.hint') }}" aria-label="{{ __('copy.hint') }}: {{ $r->phone_e164 }}">{{ $r->phone_e164 }}</button>
+                            @else
+                                <span class="text-soft">—</span>
+                            @endif
+                        </td>
                         <td>{{ $r->segments }}</td>
                         <td>
                             @php
