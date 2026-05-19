@@ -317,5 +317,22 @@
     "import.submit":  "Importeren starten",
     "import.submitting":  "Bezig met importeren…",
     "import.flash.success":  "Geïmporteerd ✓ — Leerlingen +:created / bijgewerkt :updated • Families +:families • Betalingen :payments • Te-laat-markers :markers • Ongeldige nummers :invalid",
-    "import.flash.failed":  "Import mislukt: :error"
+    "import.flash.failed":  "Import mislukt: :error",
+    "panel.secondary_phone":  "Tweede",
+    "panel.payments.paid":  "Betaald",
+    "panel.fees.overrides_title":  "Maandbedrag-aanpassingen",
+    "panel.fees.add_override":  "Aanpassing toevoegen",
+    "panel.fees.surcharges_title":  "Toeslagen (extra kosten)",
+    "panel.fees.add_surcharge":  "Toeslag toevoegen",
+    "panel.fees.amount_placeholder":  "Bedrag €",
+    "panel.fees.reason_optional_placeholder":  "Reden (optioneel)",
+    "panel.fees.reason_required_placeholder":  "Reden (verplicht)",
+    "panel.profile.primary_phone":  "Hoofdtelefoonnummer",
+    "panel.profile.secondary_phone":  "Tweede telefoonnummer",
+    "panel.profile.phone_hint":  "Automatisch genormaliseerd naar E.164 (bv. +316xxxxxxxx)",
+    "panel.profile.phone_placeholder":  "bv. 06xxxxxxxx",
+    "panel.profile.default_fee_label":  "Aangepast standaardbedrag (overschrijft globaal)",
+    "panel.profile.default_fee_placeholder":  "bv. 25.00",
+    "panel.profile.notes_label":  "Notities",
+    "panel.messages.empty":  "Nog geen berichten."
 }

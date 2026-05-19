@@ -28,7 +28,7 @@
                     <div class="value" style="font-family:ui-monospace,monospace;font-size:13px">{{ $student->phone_primary_e164 ?: '—' }}</div>
                 </div>
                 <div class="summary-item">
-                    <div class="label">📞₂ Secondary</div>
+                    <div class="label">📞₂ {{ __('panel.secondary_phone') }}</div>
                     <div class="value" style="font-family:ui-monospace,monospace;font-size:13px">{{ $student->phone_secondary_e164 ?: '—' }}</div>
                 </div>
                 <div class="summary-item">
@@ -69,7 +69,7 @@
                         <tr style="background:var(--color-surface-alt)">
                             <th style="padding:8px;text-align:start;font-size:11px;text-transform:uppercase;color:var(--color-text-muted)">{{ __('filters.month') }}</th>
                             <th style="padding:8px;font-size:11px;text-transform:uppercase;color:var(--color-text-muted)">{{ __('payment.due') }}</th>
-                            <th style="padding:8px;font-size:11px;text-transform:uppercase;color:var(--color-text-muted)">{{ __('Paid') }}</th>
+                            <th style="padding:8px;font-size:11px;text-transform:uppercase;color:var(--color-text-muted)">{{ __('panel.payments.paid') }}</th>
                             <th style="padding:8px;font-size:11px;text-transform:uppercase;color:var(--color-text-muted)">{{ __('payment.remaining') }}</th>
                             <th style="padding:8px"></th>
                         </tr>
@@ -107,7 +107,7 @@
 
             {{-- Tab: Fees --}}
             @if ($tab === 'fees')
-                <h4 style="margin-top:0">💶 {{ __('Monthly fee overrides') }}</h4>
+                <h4 style="margin-top:0">💶 {{ __('panel.fees.overrides_title') }}</h4>
                 @if ($student->feeOverrides->count() > 0)
                     <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px">
                         @foreach ($student->feeOverrides as $ov)
@@ -126,14 +126,14 @@
                             <option value="{{ $num }}">{{ $name }}</option>
                         @endforeach
                     </select>
-                    <input type="number" step="0.01" class="form-input" wire:model="override_amount" placeholder="Amount €">
+                    <input type="number" step="0.01" class="form-input" wire:model="override_amount" placeholder="{{ __('panel.fees.amount_placeholder') }}">
                 </div>
-                <input type="text" class="form-input mt-2" wire:model="override_reason" placeholder="Reason (optional)">
-                <button class="btn btn-primary mt-2" wire:click="addOverride">+ {{ __('Add override') }}</button>
+                <input type="text" class="form-input mt-2" wire:model="override_reason" placeholder="{{ __('panel.fees.reason_optional_placeholder') }}">
+                <button class="btn btn-primary mt-2" wire:click="addOverride">+ {{ __('panel.fees.add_override') }}</button>
 
                 <hr style="margin:22px 0;border:none;border-top:1px solid var(--color-border)">
 
-                <h4>➕ {{ __('Surcharges (extra fees)') }}</h4>
+                <h4>➕ {{ __('panel.fees.surcharges_title') }}</h4>
                 @if ($student->surcharges->count() > 0)
                     <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px">
                         @foreach ($student->surcharges as $sur)
@@ -152,10 +152,10 @@
                             <option value="{{ $num }}">{{ $name }}</option>
                         @endforeach
                     </select>
-                    <input type="number" step="0.01" class="form-input" wire:model="surcharge_amount" placeholder="Amount €">
+                    <input type="number" step="0.01" class="form-input" wire:model="surcharge_amount" placeholder="{{ __('panel.fees.amount_placeholder') }}">
                 </div>
-                <input type="text" class="form-input mt-2" wire:model="surcharge_reason" placeholder="Reason (required)">
-                <button class="btn btn-primary mt-2" wire:click="addSurcharge">+ {{ __('Add surcharge') }}</button>
+                <input type="text" class="form-input mt-2" wire:model="surcharge_reason" placeholder="{{ __('panel.fees.reason_required_placeholder') }}">
+                <button class="btn btn-primary mt-2" wire:click="addSurcharge">+ {{ __('panel.fees.add_surcharge') }}</button>
             @endif
 
             {{-- Tab: Settings --}}
@@ -216,20 +216,20 @@
                     <input type="text" class="form-input" wire:model="name">
                 </div>
                 <div class="form-group">
-                    <label>Primary phone</label>
-                    <input type="text" class="form-input" wire:model="phone_primary_raw" placeholder="06xxxxxxxx">
-                    <small class="text-muted">Auto-normalized to +316xxxxxxxx</small>
+                    <label>{{ __('panel.profile.primary_phone') }}</label>
+                    <input type="text" class="form-input" wire:model="phone_primary_raw" placeholder="{{ __('panel.profile.phone_placeholder') }}">
+                    <small class="text-muted">{{ __('panel.profile.phone_hint') }}</small>
                 </div>
                 <div class="form-group">
-                    <label>Secondary phone</label>
-                    <input type="text" class="form-input" wire:model="phone_secondary_raw">
+                    <label>{{ __('panel.profile.secondary_phone') }}</label>
+                    <input type="text" class="form-input" wire:model="phone_secondary_raw" placeholder="{{ __('panel.profile.phone_placeholder') }}">
                 </div>
                 <div class="form-group">
-                    <label>Custom default fee (overrides global)</label>
-                    <input type="number" step="0.01" class="form-input" wire:model="default_fee_amount" placeholder="e.g. 25.00">
+                    <label>{{ __('panel.profile.default_fee_label') }}</label>
+                    <input type="number" step="0.01" class="form-input" wire:model="default_fee_amount" placeholder="{{ __('panel.profile.default_fee_placeholder') }}">
                 </div>
                 <div class="form-group">
-                    <label>Notes</label>
+                    <label>{{ __('panel.profile.notes_label') }}</label>
                     <textarea class="form-textarea" wire:model="notes"></textarea>
                 </div>
                 <button class="btn btn-primary" wire:click="saveBasic">💾 {{ __('common.save') }}</button>
@@ -257,7 +257,7 @@
                         </div>
                     </div>
                 @empty
-                    <p class="text-soft" style="text-align:center;padding:30px">No messages yet.</p>
+                    <p class="text-soft" style="text-align:center;padding:30px">{{ __('panel.messages.empty') }}</p>
                 @endforelse
             @endif
         </div>

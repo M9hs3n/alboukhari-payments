@@ -317,5 +317,22 @@
     "import.submit":  "بدء الاستيراد",
     "import.submitting":  "جارٍ الاستيراد…",
     "import.flash.success":  "تم الاستيراد ✓ — الطلاب +:created / محدَّث :updated • العائلات +:families • الدفعات :payments • علامات التأخير :markers • أرقام غير صالحة :invalid",
-    "import.flash.failed":  "فشل الاستيراد: :error"
+    "import.flash.failed":  "فشل الاستيراد: :error",
+    "panel.secondary_phone":  "بديل",
+    "panel.payments.paid":  "المدفوع",
+    "panel.fees.overrides_title":  "تعديلات الرسوم الشهرية",
+    "panel.fees.add_override":  "إضافة تعديل",
+    "panel.fees.surcharges_title":  "رسوم إضافية",
+    "panel.fees.add_surcharge":  "إضافة رسم",
+    "panel.fees.amount_placeholder":  "المبلغ €",
+    "panel.fees.reason_optional_placeholder":  "السبب (اختياري)",
+    "panel.fees.reason_required_placeholder":  "السبب (مطلوب)",
+    "panel.profile.primary_phone":  "الهاتف الأساسي",
+    "panel.profile.secondary_phone":  "الهاتف البديل",
+    "panel.profile.phone_hint":  "يتم تنسيقه تلقائياً إلى E.164 (مثل +316xxxxxxxx)",
+    "panel.profile.phone_placeholder":  "مثل 06xxxxxxxx",
+    "panel.profile.default_fee_label":  "رسم افتراضي مخصّص (يتجاوز العام)",
+    "panel.profile.default_fee_placeholder":  "مثل 25.00",
+    "panel.profile.notes_label":  "ملاحظات",
+    "panel.messages.empty":  "لا توجد رسائل بعد."
 }

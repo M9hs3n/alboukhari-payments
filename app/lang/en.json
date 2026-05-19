@@ -317,5 +317,22 @@
     "import.submit":  "Start import",
     "import.submitting":  "Importing…",
     "import.flash.success":  "Imported ✓ — Students +:created / updated :updated • Families +:families • Payments :payments • Late markers :markers • Invalid phones :invalid",
-    "import.flash.failed":  "Import failed: :error"
+    "import.flash.failed":  "Import failed: :error",
+    "panel.secondary_phone":  "Secondary",
+    "panel.payments.paid":  "Paid",
+    "panel.fees.overrides_title":  "Monthly fee overrides",
+    "panel.fees.add_override":  "Add override",
+    "panel.fees.surcharges_title":  "Surcharges (extra fees)",
+    "panel.fees.add_surcharge":  "Add surcharge",
+    "panel.fees.amount_placeholder":  "Amount €",
+    "panel.fees.reason_optional_placeholder":  "Reason (optional)",
+    "panel.fees.reason_required_placeholder":  "Reason (required)",
+    "panel.profile.primary_phone":  "Primary phone",
+    "panel.profile.secondary_phone":  "Secondary phone",
+    "panel.profile.phone_hint":  "Auto-normalized to E.164 (e.g. +316xxxxxxxx)",
+    "panel.profile.phone_placeholder":  "e.g. 06xxxxxxxx",
+    "panel.profile.default_fee_label":  "Custom default fee (overrides global)",
+    "panel.profile.default_fee_placeholder":  "e.g. 25.00",
+    "panel.profile.notes_label":  "Notes",
+    "panel.messages.empty":  "No messages yet."
 }
