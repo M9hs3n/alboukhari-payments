@@ -255,5 +255,20 @@
     "panel.suspension.to_optional":  "إلى (اختياري)",
     "panel.suspension.reason_optional":  "السبب (اختياري)",
     "panel.suspension.add":  "إضافة تعليق",
-    "panel.suspension.cancel":  "إنهاء التعليق"
+    "panel.suspension.cancel":  "إنهاء التعليق",
+    "quickentry.back_to_grid":  "العودة إلى الجدول",
+    "quickentry.saved_this_session":  "مُسجَّل في هذه الجلسة",
+    "quickentry.session_total":  "إجمالي الجلسة",
+    "quickentry.period":  "الفترة",
+    "quickentry.search_label":  "ابحث عن طالب (اسم، هاتف، أو ID)",
+    "quickentry.search_placeholder":  "ابدأ الكتابة...",
+    "quickentry.search_hint":  "اكتب حرفين على الأقل للعثور على طالب.",
+    "quickentry.searching":  "جارٍ البحث…",
+    "quickentry.paid_pill":  "مدفوع",
+    "quickentry.change_student":  "تغيير",
+    "quickentry.paid":  "المدفوع",
+    "quickentry.student":  "الطالب",
+    "quickentry.session_log_title":  "آخر الدفعات في هذه الجلسة",
+    "quickentry.method_hint":  "اضغط N أو B",
+    "quickentry.nav_hint":  "استخدم ↑ ↓ للتنقل، Enter للاختيار"
 }

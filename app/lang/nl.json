@@ -255,5 +255,20 @@
     "panel.suspension.to_optional":  "Tot (optioneel)",
     "panel.suspension.reason_optional":  "Reden (optioneel)",
     "panel.suspension.add":  "Opschorting toevoegen",
-    "panel.suspension.cancel":  "Opschorting beëindigen"
+    "panel.suspension.cancel":  "Opschorting beëindigen",
+    "quickentry.back_to_grid":  "Terug naar het raster",
+    "quickentry.saved_this_session":  "Opgeslagen in deze sessie",
+    "quickentry.session_total":  "Sessietotaal",
+    "quickentry.period":  "Periode",
+    "quickentry.search_label":  "Leerling zoeken (naam, telefoon of ID)",
+    "quickentry.search_placeholder":  "Begin met typen...",
+    "quickentry.search_hint":  "Typ minimaal 2 tekens om een leerling te vinden.",
+    "quickentry.searching":  "Zoeken…",
+    "quickentry.paid_pill":  "betaald",
+    "quickentry.change_student":  "Wijzigen",
+    "quickentry.paid":  "Betaald",
+    "quickentry.student":  "Leerling",
+    "quickentry.session_log_title":  "Laatste betalingen in deze sessie",
+    "quickentry.method_hint":  "druk op N of B",
+    "quickentry.nav_hint":  "Gebruik ↑ ↓ om te bewegen, Enter om te kiezen"
 }

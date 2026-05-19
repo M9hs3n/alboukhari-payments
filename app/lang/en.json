@@ -255,5 +255,20 @@
     "panel.suspension.to_optional":  "Until (optional)",
     "panel.suspension.reason_optional":  "Reason (optional)",
     "panel.suspension.add":  "Add suspension",
-    "panel.suspension.cancel":  "End suspension"
+    "panel.suspension.cancel":  "End suspension",
+    "quickentry.back_to_grid":  "Back to grid",
+    "quickentry.saved_this_session":  "Saved this session",
+    "quickentry.session_total":  "Session total",
+    "quickentry.period":  "Period",
+    "quickentry.search_label":  "Search student (name, phone, or ID)",
+    "quickentry.search_placeholder":  "Start typing...",
+    "quickentry.search_hint":  "Type at least 2 characters to find a student.",
+    "quickentry.searching":  "Searching…",
+    "quickentry.paid_pill":  "paid",
+    "quickentry.change_student":  "Change",
+    "quickentry.paid":  "Paid",
+    "quickentry.student":  "Student",
+    "quickentry.session_log_title":  "Last payments in this session",
+    "quickentry.method_hint":  "press N or B",
+    "quickentry.nav_hint":  "Use ↑ ↓ to move, Enter to select"
 }
