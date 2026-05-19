@@ -195,5 +195,16 @@
     "campaigns.type.balance_above":  "Saldo boven",
     "campaigns.type.specific_students":  "Specifieke leerlingen",
     "campaigns.type.first_friday":  "Eerste vrijdag (auto)",
-    "campaigns.type.mid_month_auto":  "Dag 15 van de maand (auto)"
+    "campaigns.type.mid_month_auto":  "Dag 15 van de maand (auto)",
+    "shortcuts.title":  "Sneltoetsen",
+    "shortcuts.button_label":  "Toon sneltoetsen",
+    "shortcuts.tip":  "De meeste acties hebben een sneltoets. Druk altijd op ? om deze lijst te zien.",
+    "shortcuts.group_global":  "Overal",
+    "shortcuts.group_payment":  "Betaling \u0026 snelle invoer",
+    "shortcuts.show_dialog":  "Open dit venster",
+    "shortcuts.focus_search":  "Spring naar de zoekbalk",
+    "shortcuts.close_panels":  "Sluit geopende panelen en vensters",
+    "shortcuts.cash":  "Contant betalen",
+    "shortcuts.bank":  "Per bank betalen",
+    "shortcuts.save_and_next":  "Opslaan en doorgaan"
 }

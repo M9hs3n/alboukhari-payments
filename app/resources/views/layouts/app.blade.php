@@ -58,6 +58,16 @@
 
     <span class="topbar-spacer"></span>
 
+    {{-- Keyboard shortcuts helper --}}
+    <button
+        type="button"
+        class="kbd-help-btn"
+        title="{{ __('shortcuts.button_label') }}"
+        aria-label="{{ __('shortcuts.button_label') }}"
+        @click.prevent="$dispatch('open-shortcuts')"
+        x-data
+    >?</button>
+
     {{-- Language switcher --}}
     <div class="lang-switcher" title="{{ __('topbar.language') }}">
         <a href="{{ route('locale.switch', 'en') }}" class="{{ $locale === 'en' ? 'active' : '' }}">EN</a>
@@ -111,18 +121,82 @@
     </template>
 </div>
 
+{{-- Keyboard shortcuts dialog --}}
+<div
+    x-data="{ open: false }"
+    x-cloak
+    @open-shortcuts.window="open = true"
+    @close-panels.window="open = false"
+    @keydown.window.escape="open = false"
+>
+    <div
+        class="modal-backdrop"
+        x-show="open"
+        x-transition.opacity.duration.150ms
+        @click.self="open = false"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="shortcuts-dialog-title"
+    >
+        <div
+            class="modal-box shortcuts-modal"
+            x-show="open"
+            @click.stop
+        >
+            <div class="modal-header">
+                <h3 id="shortcuts-dialog-title">⌨️ {{ __('shortcuts.title') }}</h3>
+                <button type="button" class="btn btn-sm btn-ghost" @click="open = false" aria-label="{{ __('common.close') }}">✕</button>
+            </div>
+            <div class="modal-body">
+                <section class="shortcut-group">
+                    <h4>{{ __('shortcuts.group_global') }}</h4>
+                    <dl class="shortcut-list">
+                        <dt><kbd>?</kbd></dt>
+                        <dd>{{ __('shortcuts.show_dialog') }}</dd>
+                        <dt><kbd>/</kbd></dt>
+                        <dd>{{ __('shortcuts.focus_search') }}</dd>
+                        <dt><kbd>Esc</kbd></dt>
+                        <dd>{{ __('shortcuts.close_panels') }}</dd>
+                    </dl>
+                </section>
+                <section class="shortcut-group">
+                    <h4>{{ __('shortcuts.group_payment') }}</h4>
+                    <dl class="shortcut-list">
+                        <dt><kbd>N</kbd></dt>
+                        <dd>{{ __('shortcuts.cash') }}</dd>
+                        <dt><kbd>B</kbd></dt>
+                        <dd>{{ __('shortcuts.bank') }}</dd>
+                        <dt><kbd>Ctrl</kbd> <span class="kbd-plus">+</span> <kbd>Enter</kbd></dt>
+                        <dd>{{ __('shortcuts.save_and_next') }}</dd>
+                    </dl>
+                </section>
+                <p class="shortcut-tip">💡 {{ __('shortcuts.tip') }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 @livewireScripts
 
 <script>
-    // Keyboard shortcuts
+    // Global keyboard shortcuts
     document.addEventListener('keydown', (e) => {
+        const tag = document.activeElement?.tagName;
+        const typing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(tag) || document.activeElement?.isContentEditable;
+
         if (e.key === 'Escape') {
             window.dispatchEvent(new CustomEvent('close-panels'));
+            return;
         }
-        if (e.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) {
+        if (typing) return;
+
+        if (e.key === '/') {
             e.preventDefault();
             const search = document.querySelector('.search-global, input.search');
             if (search) search.focus();
+        } else if (e.key === '?') {
+            e.preventDefault();
+            window.dispatchEvent(new CustomEvent('open-shortcuts'));
         }
     });
 </script>
