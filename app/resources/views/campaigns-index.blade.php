@@ -1,10 +1,22 @@
 @extends('layouts.app')
 
+@php
+    $statusPills = [
+        'draft'     => 'pill-muted',
+        'queued'    => 'pill-info',
+        'running'   => 'pill-info',
+        'paused'    => 'pill-warning',
+        'completed' => 'pill-success',
+        'failed'    => 'pill-danger',
+        'canceled'  => 'pill-muted',
+    ];
+@endphp
+
 @section('content')
 <div style="max-width:1200px;margin:0 auto">
     <div class="page-header">
         <h1>📋 {{ __('nav.campaigns') }}</h1>
-        <a href="{{ route('send.form') }}" class="btn btn-primary">+ {{ __('campaigns.new') }}</a>
+        <a href="{{ route('send.form') }}" class="btn btn-primary">+ {{ __('campaign.new') }}</a>
     </div>
 
     <div class="page-card" style="padding:0">
@@ -12,11 +24,11 @@
             <thead>
                 <tr>
                     <th style="text-align:start;padding:12px 16px">#</th>
-                    <th style="text-align:start">{{ __('campaigns.type') }}</th>
+                    <th style="text-align:start">{{ __('common.type') }}</th>
                     <th>{{ __('common.period') }}</th>
                     <th>{{ __('send.recipients') }}</th>
-                    <th>✓ {{ __('campaigns.sent') }}</th>
-                    <th>✗ {{ __('campaigns.failed') }}</th>
+                    <th>✓ {{ __('common.sent') }}</th>
+                    <th>✗ {{ __('common.failed') }}</th>
                     <th>💵 {{ __('common.cost') }}</th>
                     <th>{{ __('columns.status') }}</th>
                     <th>{{ __('common.date') }}</th>
@@ -49,16 +61,26 @@
                         <td><span class="pill pill-success">{{ $c->sent_count }}</span></td>
                         <td>@if($c->failed_count > 0)<span class="pill pill-danger">{{ $c->failed_count }}</span>@else<span class="text-soft">0</span>@endif</td>
                         <td class="fw-700">{{ number_format($c->actual_cost, 2) }}€</td>
-                        <td><span class="pill {{ $cls }}">{{ $statusLabel }}</span></td>
+                        <td>
+                            @php
+                                $statusKey = 'campaign.status.' . $c->status;
+                                $statusLabel = __($statusKey);
+                                if ($statusLabel === $statusKey) { $statusLabel = $c->status; }
+                                $statusCls = $statusPills[$c->status] ?? 'pill-muted';
+                            @endphp
+                            <span class="pill {{ $statusCls }}">{{ $statusLabel }}</span>
+                        </td>
                         <td class="text-muted fs-xs">{{ $c->created_at->format('Y-m-d H:i') }}</td>
                         <td>
-                            <a href="{{ route('campaigns.show', $c) }}" class="btn btn-sm btn-soft-primary">👁️ {{ __('campaigns.open') }}</a>
+                            <a href="{{ route('campaigns.show', $c) }}" class="btn btn-sm btn-soft-primary">👁️ {{ __('common.open') }}</a>
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="10" style="padding:60px;text-align:center;color:var(--color-text-soft)">
-                        <div style="font-size:48px">📭</div>
-                        <div class="mt-2">{{ __('campaigns.none_yet') }}</div>
+                    <tr><td colspan="10" style="padding:60px 24px;text-align:center;color:var(--color-text-soft)">
+                        <div style="font-size:48px;line-height:1">📭</div>
+                        <div class="mt-2" style="font-weight:600;color:var(--color-text);font-size:15px">{{ __('campaign.empty_title') }}</div>
+                        <div class="mt-2" style="max-width:380px;margin:8px auto 0">{{ __('campaign.empty_subtitle') }}</div>
+                        <a href="{{ route('send.form') }}" class="btn btn-primary mt-4">+ {{ __('campaign.empty_cta') }}</a>
                     </td></tr>
                 @endforelse
             </tbody>
