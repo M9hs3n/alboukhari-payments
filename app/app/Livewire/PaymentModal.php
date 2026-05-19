@@ -6,147 +6,101 @@ use App\Models\Payment;
 use App\Models\Student;
 use App\Services\FeeResolver;
 use App\Services\MonthNames;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
 class PaymentModal extends Component
 {
-    public bool $isOpen = false;
-    public ?int $studentId = null;
-    public ?int $year = null;
-    public ?int $month = null;
-
-    public ?float $amount = null;
-    public string $method = 'cash';
-    public string $note = '';
-    public string $paid_at = '';
-
-    public ?int $editingPaymentId = null;
-    public array $existingPayments = [];
-
-    public string $studentName = '';
-    public float $dueAmount = 0;
-    public float $paidSoFar = 0;
-
-    #[On('open-payment-modal')]
-    public function open(int $studentId, int $year, int $month): void
+    public function prefetchModalData(int $studentId, int $year, int $month): array
     {
         $student = Student::findOrFail($studentId);
-        $this->studentId = $studentId;
-        $this->year = $year;
-        $this->month = $month;
-        $this->studentName = $student->name;
+        return [
+            'studentName' => $student->name,
+            'due'         => FeeResolver::dueAmount($student, $year, $month),
+            'paid'        => FeeResolver::paidAmount($student, $year, $month),
+        ];
+    }
 
-        $this->dueAmount = FeeResolver::dueAmount($student, $year, $month);
-        $this->paidSoFar = FeeResolver::paidAmount($student, $year, $month);
-
-        $remaining = $this->dueAmount - $this->paidSoFar;
-        $this->amount = $remaining > 0 ? $remaining : $this->dueAmount;
-        $this->method = 'cash';
-        $this->note = '';
-        $this->paid_at = now()->format('Y-m-d');
-        $this->editingPaymentId = null;
-
-        $this->existingPayments = $student->payments()
+    public function loadExistingPayments(int $studentId, int $year, int $month): array
+    {
+        $student = Student::findOrFail($studentId);
+        return $student->payments()
             ->where('period_year', $year)
             ->where('period_month', $month)
             ->orderBy('paid_at')
             ->get()
-            ->map(fn($p) => [
-                'id' => $p->id,
-                'amount' => (float) $p->amount,
-                'method' => $p->method,
+            ->map(fn ($p) => [
+                'id'           => $p->id,
+                'amount'       => (float) $p->amount,
+                'method'       => $p->method,
                 'method_label' => $p->methodLabel(),
-                'method_icon' => $p->methodIcon(),
-                'paid_at' => $p->paid_at->format('Y-m-d'),
-                'note' => $p->note,
-            ])->toArray();
-
-        $this->isOpen = true;
+                'method_icon'  => $p->methodIcon(),
+                'paid_at'      => $p->paid_at->format('Y-m-d'),
+                'note'         => $p->note,
+            ])
+            ->toArray();
     }
 
-    public function close(): void
+    public function savePaymentAlpine(array $payload): array
     {
-        $this->reset(['isOpen', 'studentId', 'year', 'month', 'amount', 'method', 'note', 'paid_at', 'editingPaymentId', 'existingPayments', 'studentName', 'dueAmount', 'paidSoFar']);
-        $this->method = 'cash';
-    }
+        $studentId        = (int) ($payload['studentId'] ?? 0);
+        $year             = (int) ($payload['year'] ?? 0);
+        $month            = (int) ($payload['month'] ?? 0);
+        $amount           = (float) ($payload['amount'] ?? 0);
+        $method           = $payload['method'] ?? null;
+        $note             = $payload['note'] ?? null;
+        $paid_at          = $payload['paid_at'] ?? null;
+        $editingPaymentId = ! empty($payload['editingPaymentId']) ? (int) $payload['editingPaymentId'] : null;
 
-    public function editExisting(int $paymentId): void
-    {
-        $p = Payment::findOrFail($paymentId);
-        $this->editingPaymentId = $paymentId;
-        $this->amount = (float) $p->amount;
-        $this->method = $p->method === 'legacy_zero' ? 'bank' : $p->method;
-        $this->note = $p->note ?: '';
-        $this->paid_at = $p->paid_at->format('Y-m-d');
-    }
-
-    public function deletePayment(int $paymentId): void
-    {
-        $p = Payment::findOrFail($paymentId);
-        $p->delete();
-        $this->dispatch('payment-saved', studentId: $this->studentId);
-        $this->dispatch('flash', message: __('flash.payment_deleted'));
-        $this->open($this->studentId, $this->year, $this->month);
-    }
-
-    public function setMethod(string $method): void
-    {
-        if (in_array($method, ['cash', 'bank'], true)) {
-            $this->method = $method;
+        if (! $studentId || ! $year || ! $month || ! $paid_at) {
+            return ['ok' => false, 'error' => 'missing_required_fields'];
         }
-    }
+        if (! in_array($method, ['cash', 'bank'], true)) {
+            return ['ok' => false, 'error' => 'invalid_method'];
+        }
+        if ($amount < 0) {
+            return ['ok' => false, 'error' => 'amount_must_be_non_negative'];
+        }
 
-    public function save(bool $next = false): void
-    {
-        $this->validate([
-            'amount' => 'required|numeric|min:0',
-            'method' => 'required|in:cash,bank',
-            'paid_at' => 'required|date',
-            'note' => 'nullable|string|max:500',
-        ]);
-
-        if ($this->editingPaymentId) {
-            $p = Payment::findOrFail($this->editingPaymentId);
+        if ($editingPaymentId) {
+            $p = Payment::findOrFail($editingPaymentId);
             $p->update([
-                'amount' => $this->amount,
-                'method' => $this->method,
-                'note' => $this->note ?: null,
-                'paid_at' => $this->paid_at,
+                'amount'  => $amount,
+                'method'  => $method,
+                'note'    => $note ?: null,
+                'paid_at' => $paid_at,
             ]);
         } else {
             Payment::create([
-                'student_id' => $this->studentId,
-                'period_year' => $this->year,
-                'period_month' => $this->month,
-                'amount' => $this->amount,
-                'method' => $this->method,
-                'note' => $this->note ?: null,
-                'paid_at' => $this->paid_at,
+                'student_id'   => $studentId,
+                'period_year'  => $year,
+                'period_month' => $month,
+                'amount'       => $amount,
+                'method'       => $method,
+                'note'         => $note ?: null,
+                'paid_at'      => $paid_at,
             ]);
         }
 
-        $this->dispatch('payment-saved', studentId: $this->studentId);
+        $this->dispatch('payment-saved', studentId: $studentId);
         $this->dispatch('flash', message: __('flash.payment_saved'));
 
-        if ($next) {
-            // Find next student to focus on (same month)
-            $nextStudent = Student::where('id', '>', $this->studentId)
-                ->where('is_hidden', false)
-                ->orderBy('id')
-                ->first();
-            $this->close();
-            if ($nextStudent) {
-                $this->open($nextStudent->id, $this->year, $this->month);
-            }
-        } else {
-            $this->close();
-        }
+        return ['ok' => true];
+    }
+
+    public function deletePaymentAlpine(int $paymentId, int $studentId): array
+    {
+        $p = Payment::findOrFail($paymentId);
+        $p->delete();
+        $this->dispatch('payment-saved', studentId: $studentId);
+        $this->dispatch('flash', message: __('flash.payment_deleted'));
+
+        return ['ok' => true];
     }
 
     public function render()
     {
-        $monthName = $this->month ? (MonthNames::full()[$this->month] ?? '') : '';
-        return view('livewire.payment-modal', compact('monthName'));
+        return view('livewire.payment-modal', [
+            'monthNames' => MonthNames::full(),
+        ]);
     }
 }

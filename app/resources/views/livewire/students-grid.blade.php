@@ -1,5 +1,5 @@
 <div
-    x-data="studentsGrid({{ json_encode(array_values($rowsJson)) }}, @js(__('actions.bulk_confirm')))"
+    x-data="studentsGrid({{ json_encode(array_values($rowsJson)) }}, @js(__('actions.bulk_confirm')), {{ $year }})"
     x-init="init()"
 >
     {{-- ====== KPI Strip ====== --}}
@@ -113,7 +113,7 @@
 
     {{-- ====== The Grid ====== --}}
     <div class="grid-wrap">
-        <table class="students-grid">
+        <table class="students-grid" @click="onCellClick($event)">
             <thead>
                 <tr>
                     <th class="sticky-col col-checkbox">
@@ -183,7 +183,7 @@
                         </td>
                         @foreach (range(1, 12) as $m)
                             @php
-                                $d = $monthData[$student->id][$m] ?? ['status' => 'not_due', 'paid' => 0, 'methodIcon' => ''];
+                                $d = $monthData[$student->id][$m] ?? ['status' => 'not_due', 'paid' => 0, 'due' => 0, 'methodIcon' => ''];
                                 $class = match ($d['status']) {
                                     'paid' => 'cell-paid',
                                     'partial' => 'cell-partial',
@@ -200,7 +200,15 @@
                                     default => '',
                                 };
                             @endphp
-                            <td class="cell-month {{ $class }}" wire:click="openPayment({{ $student->id }}, {{ $m }})" title="{{ $months[$m] }} — {{ \App\Services\MonthStatusResolver::label($d['status']) }}">
+                            <td
+                                class="cell-month {{ $class }}"
+                                data-student-id="{{ $student->id }}"
+                                data-student-name="{{ $student->name }}"
+                                data-month="{{ $m }}"
+                                data-due="{{ $d['due'] ?? 0 }}"
+                                data-paid="{{ $d['paid'] ?? 0 }}"
+                                title="{{ $months[$m] }} — {{ \App\Services\MonthStatusResolver::label($d['status']) }}"
+                            >
                                 <div class="cell-content">
                                     <span class="amount">{{ $display }}</span>
                                     @if ($d['methodIcon'])
@@ -224,25 +232,27 @@
                         </td>
                         <td>
                             <div class="dropdown" x-data="{ open: false }" @click.outside="open = false">
-                                <button class="icon-btn" @click="open = !open">⋮</button>
-                                <div class="dropdown-menu" x-show="open" x-transition x-cloak>
-                                    <a href="#" wire:click.prevent="openStudent({{ $student->id }})">👁️ {{ __('actions.view_details') }}</a>
-                                    <button wire:click="openPayment({{ $student->id }}, {{ (int) date('n') }})">💶 {{ __('actions.add_payment') }}</button>
-                                    <button wire:click="$dispatch('open-send-message', { studentId: {{ $student->id }} })">📲 {{ __('actions.send_message') }}</button>
-                                    <div class="divider"></div>
-                                    <button wire:click="toggleFlag({{ $student->id }}, 'is_hidden')">
-                                        {{ $student->is_hidden ? '👁️ '.__('actions.unhide') : '🙈 '.__('actions.hide') }}
-                                    </button>
-                                    <button wire:click="toggleFlag({{ $student->id }}, 'is_blocked_messages')">
-                                        {{ $student->is_blocked_messages ? '✅ '.__('actions.unblock_messages') : '🚫 '.__('actions.block_messages') }}
-                                    </button>
-                                    <button wire:click="toggleFlag({{ $student->id }}, 'is_in_person')">
-                                        {{ $student->is_in_person ? '🚪 '.__('actions.remove_in_person') : '🏠 '.__('actions.mark_in_person') }}
-                                    </button>
-                                    <button wire:click="toggleFlag({{ $student->id }}, 'excluded_from_send_all')">
-                                        {{ $student->excluded_from_send_all ? '✓ '.__('actions.include_bulk') : '🚷 '.__('actions.exclude_bulk') }}
-                                    </button>
-                                </div>
+                                <button class="icon-btn" @click="open = !open" aria-haspopup="true" :aria-expanded="open">⋮</button>
+                                <template x-if="open">
+                                    <div class="dropdown-menu" x-transition>
+                                        <a href="#" wire:click.prevent="openStudent({{ $student->id }})">👁️ {{ __('actions.view_details') }}</a>
+                                        <button @click.prevent="open = false; const cell = document.querySelector(`tr[wire\\:key='row-{{ $student->id }}'] td.cell-month[data-month='{{ (int) date('n') }}']`); if (cell) cell.click();">💶 {{ __('actions.add_payment') }}</button>
+                                        <button wire:click="$dispatch('open-send-message', { studentId: {{ $student->id }} })">📲 {{ __('actions.send_message') }}</button>
+                                        <div class="divider"></div>
+                                        <button wire:click="toggleFlag({{ $student->id }}, 'is_hidden')">
+                                            {{ $student->is_hidden ? '👁️ '.__('actions.unhide') : '🙈 '.__('actions.hide') }}
+                                        </button>
+                                        <button wire:click="toggleFlag({{ $student->id }}, 'is_blocked_messages')">
+                                            {{ $student->is_blocked_messages ? '✅ '.__('actions.unblock_messages') : '🚫 '.__('actions.block_messages') }}
+                                        </button>
+                                        <button wire:click="toggleFlag({{ $student->id }}, 'is_in_person')">
+                                            {{ $student->is_in_person ? '🚪 '.__('actions.remove_in_person') : '🏠 '.__('actions.mark_in_person') }}
+                                        </button>
+                                        <button wire:click="toggleFlag({{ $student->id }}, 'excluded_from_send_all')">
+                                            {{ $student->excluded_from_send_all ? '✓ '.__('actions.include_bulk') : '🚷 '.__('actions.exclude_bulk') }}
+                                        </button>
+                                    </div>
+                                </template>
                             </div>
                         </td>
                     </tr>
@@ -269,9 +279,10 @@
 </div>
 
 <script>
-    function studentsGrid(initialRows, bulkConfirmTpl) {
+    function studentsGrid(initialRows, bulkConfirmTpl, year) {
         return {
             rows: initialRows,
+            year: parseInt(year) || (new Date()).getFullYear(),
             bulkConfirmTpl: bulkConfirmTpl || 'Apply this change to :count student(s)?',
             search: '',
             clientFilter: 'all',
@@ -282,6 +293,26 @@
             init() {
                 // Listen for shortcut
                 this.$watch('search', () => { /* triggers reactivity */ });
+            },
+
+            // Delegated click: open payment modal instantly when a month cell is clicked.
+            // Avoids one wire:click binding per cell (1200+ on a full grid) and skips
+            // the server round-trip — Alpine has all the data it needs in data-* attrs.
+            onCellClick(event) {
+                const cell = event.target.closest('td.cell-month');
+                if (!cell) return;
+                event.preventDefault();
+                event.stopPropagation();
+                window.dispatchEvent(new CustomEvent('open-payment-modal-fast', {
+                    detail: {
+                        studentId:   parseInt(cell.dataset.studentId),
+                        studentName: cell.dataset.studentName || '',
+                        year:        this.year,
+                        month:       parseInt(cell.dataset.month),
+                        due:         parseFloat(cell.dataset.due) || 0,
+                        paid:        parseFloat(cell.dataset.paid) || 0,
+                    },
+                }));
             },
 
             isVisible(id) {

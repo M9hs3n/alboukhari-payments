@@ -79,10 +79,18 @@ class Student extends Model
 
     public function activeSuspension(): ?StudentSuspension
     {
+        $now = now();
+        if ($this->relationLoaded('suspensions')) {
+            return $this->suspensions
+                ->filter(fn ($s) => $s->starts_at <= $now && (! $s->ends_at || $s->ends_at >= $now))
+                ->sortByDesc('id')
+                ->first();
+        }
+
         return $this->suspensions()
-            ->where('starts_at', '<=', now())
-            ->where(function ($q) {
-                $q->whereNull('ends_at')->orWhere('ends_at', '>=', now());
+            ->where('starts_at', '<=', $now)
+            ->where(function ($q) use ($now) {
+                $q->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
             })
             ->latest()
             ->first();

@@ -6,13 +6,16 @@ use App\Models\Student;
 use Carbon\Carbon;
 
 /**
- * يحسب حالة شهر معيّن لطالب:
- * - not_due  : الشهر مستقبلي لم يحن بعد
- * - paid     : الرصيد ≤ 0 (مدفوع كاملاً أو زيادة)
- * - partial  : دُفع جزء فقط
- * - late     : لم يدفع وقد مرّ منتصف الشهر (15)، أو وُسم legacy_late
- * - unpaid   : لم يدفع وحان وقت الشهر، لم يبلغ منتصفه
- * - legacy_zero : مستورد من الشيت بقيمة 0 (سُجّل بنكياً سابقاً)
+ * Computes the status of a (student × year × month):
+ *  - not_due     : month is in the future
+ *  - paid        : balance <= 0 (full or overpaid)
+ *  - partial     : something paid but less than due
+ *  - late        : nothing paid and the month is past its grace window
+ *  - unpaid      : nothing paid and the month is current/recent
+ *  - legacy_zero : imported with method=legacy_zero (historically bank-paid)
+ *
+ * Reads from eager-loaded `payments` / `markers` collections when available
+ * to avoid per-cell N+1 queries during grid renders.
  */
 class MonthStatusResolver
 {
@@ -26,13 +29,7 @@ class MonthStatusResolver
 
         $due = FeeResolver::dueAmount($student, $year, $month);
 
-        // فحص legacy_zero
-        $hasLegacyZero = $student->payments()
-            ->where('period_year', $year)
-            ->where('period_month', $month)
-            ->where('method', 'legacy_zero')
-            ->exists();
-
+        $hasLegacyZero = self::hasPaymentMethod($student, $year, $month, 'legacy_zero');
         $paid = FeeResolver::paidAmount($student, $year, $month);
 
         if ($hasLegacyZero && $paid == 0) {
@@ -47,12 +44,7 @@ class MonthStatusResolver
             return 'partial';
         }
 
-        // لم يدفع — هل متأخر؟
-        $hasLegacyLate = $student->markers()
-            ->where('period_year', $year)
-            ->where('period_month', $month)
-            ->where('type', 'legacy_late')
-            ->exists();
+        $hasLegacyLate = self::hasMarker($student, $year, $month, 'legacy_late');
 
         $midOfNextMonth = $monthStart->copy()->addMonth()->day(15);
         if ($hasLegacyLate || $today->greaterThanOrEqualTo($midOfNextMonth)) {
@@ -60,6 +52,40 @@ class MonthStatusResolver
         }
 
         return 'unpaid';
+    }
+
+    private static function hasPaymentMethod(Student $student, int $year, int $month, string $method): bool
+    {
+        if ($student->relationLoaded('payments')) {
+            return $student->payments->contains(
+                fn ($p) => (int) $p->period_year === $year
+                    && (int) $p->period_month === $month
+                    && $p->method === $method
+            );
+        }
+
+        return $student->payments()
+            ->where('period_year', $year)
+            ->where('period_month', $month)
+            ->where('method', $method)
+            ->exists();
+    }
+
+    private static function hasMarker(Student $student, int $year, int $month, string $type): bool
+    {
+        if ($student->relationLoaded('markers')) {
+            return $student->markers->contains(
+                fn ($m) => (int) $m->period_year === $year
+                    && (int) $m->period_month === $month
+                    && $m->type === $type
+            );
+        }
+
+        return $student->markers()
+            ->where('period_year', $year)
+            ->where('period_month', $month)
+            ->where('type', $type)
+            ->exists();
     }
 
     public static function colorClass(string $status): string
