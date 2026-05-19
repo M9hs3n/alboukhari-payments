@@ -3,7 +3,7 @@
     <div class="side-panel">
         <div class="side-panel-header">
             <h2>{{ $student->name }}</h2>
-            <button class="btn btn-sm btn-ghost" wire:click="close" title="Close (Esc)">✕</button>
+            <button class="btn btn-sm btn-ghost" wire:click="close" title="{{ __('common.close') }} (Esc)">✕</button>
         </div>
 
         {{-- Siblings strip --}}
@@ -160,56 +160,53 @@
 
             {{-- Tab: Settings --}}
             @if ($tab === 'settings')
-                <h4 style="margin-top:0">{{ __('Control flags') }}</h4>
+                <h4 style="margin-top:0">{{ __('panel.control_flags') }}</h4>
                 <div class="form-row cols-2">
                     <button class="btn {{ $student->is_hidden ? 'btn-warning' : '' }}" wire:click="toggleFlag('is_hidden')">
-                        {{ $student->is_hidden ? '👁️ Unhide' : '🙈 Hide' }}
+                        {{ $student->is_hidden ? '👁️ '.__('actions.unhide') : '🙈 '.__('actions.hide') }}
                     </button>
                     <button class="btn {{ $student->is_blocked_messages ? 'btn-danger' : '' }}" wire:click="toggleFlag('is_blocked_messages')">
-                        {{ $student->is_blocked_messages ? '✅ Unblock' : '🚫 Block messages' }}
+                        {{ $student->is_blocked_messages ? '✅ '.__('actions.unblock_messages') : '🚫 '.__('actions.block_messages') }}
                     </button>
                     <button class="btn {{ $student->is_in_person ? 'btn-warning' : '' }}" wire:click="toggleFlag('is_in_person')">
-                        {{ $student->is_in_person ? '🚪 Remove in-person' : '🏠 In-person' }}
+                        {{ $student->is_in_person ? '🚪 '.__('actions.remove_in_person') : '🏠 '.__('actions.mark_in_person') }}
                     </button>
                     <button class="btn {{ $student->excluded_from_send_all ? 'btn-warning' : '' }}" wire:click="toggleFlag('excluded_from_send_all')">
-                        {{ $student->excluded_from_send_all ? '✓ Include bulk' : '🚷 Exclude bulk' }}
+                        {{ $student->excluded_from_send_all ? '✓ '.__('actions.include_bulk') : '🚷 '.__('actions.exclude_bulk') }}
                     </button>
                 </div>
 
                 <hr style="margin:22px 0;border:none;border-top:1px solid var(--color-border)">
 
-                <h4>⏸️ {{ __('Temporary suspension') }}</h4>
+                <h4>⏸️ {{ __('panel.suspension.title') }}</h4>
                 @php $active = $student->activeSuspension(); @endphp
                 @if ($active)
                     @php
-                        $suspendStarts = $active->starts_at->format('Y-m-d');
-                        $suspendEnds = $active->ends_at ? $active->ends_at->format('Y-m-d') : __('panel.open_ended');
+                        $rangeLabel = __('panel.suspension.range', [
+                            'from' => $active->starts_at->format('Y-m-d'),
+                            'to' => $active->ends_at ? $active->ends_at->format('Y-m-d') : __('panel.suspension.open_ended'),
+                        ]);
                     @endphp
-                    <div class="pill pill-warning" style="display:block;padding:10px 12px;margin-bottom:10px">
-                        Suspended from <strong>{{ $suspendStarts }}</strong> to
-                        <strong>{{ $suspendEnds }}</strong>
-                        — {{ $active->reason ?: '' }}
-                        <button class="btn btn-sm btn-danger"
-                                wire:click="removeSuspension({{ $active->id }})"
-                                wire:confirm="{{ __('confirm.cancel_suspension', ['starts' => $suspendStarts, 'ends' => $suspendEnds]) }}"
-                                style="margin-inline-start:auto">{{ __('panel.end_suspension') }}</button>
+                    <div class="pill pill-warning" style="display:flex;align-items:center;gap:8px;padding:10px 12px;margin-bottom:10px">
+                        <span>{{ $rangeLabel }}@if ($active->reason) — {{ $active->reason }} @endif</span>
+                        <button class="btn btn-sm btn-danger" wire:click="removeSuspension({{ $active->id }})" style="margin-inline-start:auto">{{ __('panel.suspension.cancel') }}</button>
                     </div>
                 @endif
                 <div class="form-row cols-2">
                     <div class="form-group">
-                        <label>From</label>
+                        <label>{{ __('panel.suspension.from') }}</label>
                         <input type="date" class="form-input" wire:model="suspend_starts_at">
                     </div>
                     <div class="form-group">
-                        <label>To (optional)</label>
+                        <label>{{ __('panel.suspension.to_optional') }}</label>
                         <input type="date" class="form-input" wire:model="suspend_ends_at">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Reason (optional)</label>
+                    <label>{{ __('panel.suspension.reason_optional') }}</label>
                     <input type="text" class="form-input" wire:model="suspend_reason">
                 </div>
-                <button class="btn btn-primary" wire:click="addSuspension">+ Add suspension</button>
+                <button class="btn btn-primary" wire:click="addSuspension">+ {{ __('panel.suspension.add') }}</button>
             @endif
 
             {{-- Tab: Profile --}}
