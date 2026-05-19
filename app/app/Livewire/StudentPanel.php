@@ -7,6 +7,7 @@ use App\Models\StudentMonthlyFeeOverride;
 use App\Models\StudentSurcharge;
 use App\Models\StudentSuspension;
 use App\Services\FeeResolver;
+use App\Services\MonthNames;
 use App\Services\MonthStatusResolver;
 use Livewire\Component;
 
@@ -192,11 +193,7 @@ class StudentPanel extends Component
     {
         $student = Student::with(['family.students', 'payments', 'markers', 'suspensions'])->findOrFail($this->studentId);
         $year = (int) date('Y');
-        $months = [
-            1 => 'يناير', 2 => 'فبراير', 3 => 'مارس', 4 => 'أبريل',
-            5 => 'مايو', 6 => 'يونيو', 7 => 'يوليو', 8 => 'أغسطس',
-            9 => 'سبتمبر', 10 => 'أكتوبر', 11 => 'نوفمبر', 12 => 'ديسمبر',
-        ];
+        $months = MonthNames::full();
 
         $monthsData = [];
         $totalBalance = 0;

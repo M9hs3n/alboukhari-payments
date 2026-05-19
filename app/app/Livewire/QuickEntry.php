@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Payment;
 use App\Models\Student;
 use App\Services\FeeResolver;
+use App\Services\MonthNames;
 use Livewire\Component;
 
 class QuickEntry extends Component
@@ -99,11 +100,7 @@ class QuickEntry extends Component
                 ->get();
         }
 
-        $months = [
-            1 => 'يناير', 2 => 'فبراير', 3 => 'مارس', 4 => 'أبريل',
-            5 => 'مايو', 6 => 'يونيو', 7 => 'يوليو', 8 => 'أغسطس',
-            9 => 'سبتمبر', 10 => 'أكتوبر', 11 => 'نوفمبر', 12 => 'ديسمبر',
-        ];
+        $months = MonthNames::full();
 
         $selectedStudent = $this->selectedStudentId ? Student::find($this->selectedStudentId) : null;
         $dueAmount = $selectedStudent ? FeeResolver::dueAmount($selectedStudent, $this->year, $this->month) : 0;

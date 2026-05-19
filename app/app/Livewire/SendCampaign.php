@@ -8,6 +8,7 @@ use App\Models\Setting;
 use App\Models\Student;
 use App\Models\Template;
 use App\Services\CampaignSender;
+use App\Services\MonthNames;
 use App\Services\RecipientListBuilder;
 use App\Support\SmsCounter;
 use Livewire\Component;
@@ -195,11 +196,7 @@ class SendCampaign extends Component
     public function render()
     {
         $templates = Template::all();
-        $months = [
-            1 => 'يناير', 2 => 'فبراير', 3 => 'مارس', 4 => 'أبريل',
-            5 => 'مايو', 6 => 'يونيو', 7 => 'يوليو', 8 => 'أغسطس',
-            9 => 'سبتمبر', 10 => 'أكتوبر', 11 => 'نوفمبر', 12 => 'ديسمبر',
-        ];
+        $months = MonthNames::full();
         return view('livewire.send-campaign', [
             'templates' => $templates,
             'months' => $months,

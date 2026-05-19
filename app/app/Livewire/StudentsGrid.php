@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Student;
 use App\Services\FeeResolver;
+use App\Services\MonthNames;
 use App\Services\MonthStatusResolver;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -93,11 +94,7 @@ class StudentsGrid extends Component
 
         $students = $query->orderBy('id')->paginate($this->perPage);
 
-        $months = [
-            1 => __('Jan'), 2 => __('Feb'), 3 => __('Mar'), 4 => __('Apr'),
-            5 => __('May'), 6 => __('Jun'), 7 => __('Jul'), 8 => __('Aug'),
-            9 => __('Sep'), 10 => __('Oct'), 11 => __('Nov'), 12 => __('Dec'),
-        ];
+        $months = MonthNames::full();
 
         $monthData = [];
         $rowsJson = [];
