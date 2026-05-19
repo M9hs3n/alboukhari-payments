@@ -25,11 +25,23 @@
             <div class="summary-grid">
                 <div class="summary-item">
                     <div class="label">📞 {{ __('columns.phone') }}</div>
-                    <div class="value" style="font-family:ui-monospace,monospace;font-size:13px">{{ $student->phone_primary_e164 ?: '—' }}</div>
+                    <div class="value" style="font-family:ui-monospace,monospace;font-size:13px">
+                        @if ($student->phone_primary_e164)
+                            <button type="button" class="copyable" title="{{ __('copy.hint') }}" aria-label="{{ __('copy.hint') }}: {{ $student->phone_primary_e164 }}">{{ $student->phone_primary_e164 }}</button>
+                        @else
+                            <span class="text-soft">—</span>
+                        @endif
+                    </div>
                 </div>
                 <div class="summary-item">
-                    <div class="label">📞₂ {{ __('panel.secondary_phone') }}</div>
-                    <div class="value" style="font-family:ui-monospace,monospace;font-size:13px">{{ $student->phone_secondary_e164 ?: '—' }}</div>
+                    <div class="label">📞₂ Secondary</div>
+                    <div class="value" style="font-family:ui-monospace,monospace;font-size:13px">
+                        @if ($student->phone_secondary_e164)
+                            <button type="button" class="copyable" title="{{ __('copy.hint') }}" aria-label="{{ __('copy.hint') }}: {{ $student->phone_secondary_e164 }}">{{ $student->phone_secondary_e164 }}</button>
+                        @else
+                            <span class="text-soft">—</span>
+                        @endif
+                    </div>
                 </div>
                 <div class="summary-item">
                     <div class="label">💶 {{ __('panel.balance') }}</div>
@@ -39,7 +51,9 @@
                 </div>
                 <div class="summary-item">
                     <div class="label">🆔 ID</div>
-                    <div class="value">{{ $student->external_id ?? $student->id }}</div>
+                    <div class="value">
+                        <button type="button" class="copyable" title="{{ __('copy.hint') }}" aria-label="{{ __('copy.hint') }}: {{ $student->external_id ?? $student->id }}">{{ $student->external_id ?? $student->id }}</button>
+                    </div>
                 </div>
             </div>
 

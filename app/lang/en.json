@@ -334,5 +334,8 @@
     "panel.profile.default_fee_label":  "Custom default fee (overrides global)",
     "panel.profile.default_fee_placeholder":  "e.g. 25.00",
     "panel.profile.notes_label":  "Notes",
-    "panel.messages.empty":  "No messages yet."
+    "panel.messages.empty":  "No messages yet.",
+    "copy.copied":  "Copied",
+    "copy.failed":  "Could not copy to clipboard",
+    "copy.hint":  "Click to copy"
 }

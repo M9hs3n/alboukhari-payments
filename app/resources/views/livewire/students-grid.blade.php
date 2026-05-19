@@ -168,7 +168,11 @@
                             </a>
                         </td>
                         <td style="font-family:ui-monospace,monospace;font-size:11px;color:var(--color-text-muted)">
-                            {{ $student->phone_primary_e164 ?: '—' }}
+                            @if ($student->phone_primary_e164)
+                                <button type="button" class="copyable" title="{{ __('copy.hint') }}" aria-label="{{ __('copy.hint') }}: {{ $student->phone_primary_e164 }}">{{ $student->phone_primary_e164 }}</button>
+                            @else
+                                <span class="text-soft">—</span>
+                            @endif
                         </td>
                         <td>
                             @if ($siblingsCount > 0)
