@@ -206,5 +206,16 @@
     "shortcuts.close_panels":  "Sluit geopende panelen en vensters",
     "shortcuts.cash":  "Contant betalen",
     "shortcuts.bank":  "Per bank betalen",
-    "shortcuts.save_and_next":  "Opslaan en doorgaan"
+    "shortcuts.save_and_next":  "Opslaan en doorgaan",
+    "sms_meter.sms_short":  "SMS",
+    "sms_meter.encoding_gsm":  "GSM-7",
+    "sms_meter.encoding_unicode":  "Unicode",
+    "sms_meter.encoding_gsm_hint":  "Standaard SMS-tekenset — 160 tekens per SMS.",
+    "sms_meter.encoding_unicode_hint":  "Niet-Latijnse tekens — slechts 70 tekens per SMS.",
+    "sms_meter.hint_empty":  "Typ je bericht — de teller laat zien hoeveel SMS het wordt.",
+    "sms_meter.hint_room":  "Nog :remaining tekens vrij in deze SMS.",
+    "sms_meter.hint_close":  "Nog maar :remaining tekens vrij — één regel meer en dit wordt 2 SMS.",
+    "sms_meter.hint_overflow":  "Dit is :segments SMS — verwijder :chars tekens om in :reduce SMS te passen.",
+    "sms_meter.aria_chars":  ":length van :total tekens gebruikt",
+    "sms_meter.aria_segments":  "Kost :count SMS"
 }

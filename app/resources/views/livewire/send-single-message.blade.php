@@ -23,15 +23,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label>
-                            {{ __('send.body') }}
-                            @if ($counter)
-                                <span style="float:right;font-size:11px;color:{{ $counter['segments'] > 1 ? 'var(--color-danger)' : 'var(--color-success)' }};font-weight:700">
-                                    📊 {{ $counter['length'] }}/{{ $counter['max_per_segment'] }} — <strong>{{ $counter['segments'] }} SMS</strong>
-                                </span>
-                            @endif
-                        </label>
+                        <label>{{ __('send.body') }}</label>
                         <textarea class="form-textarea" wire:model.live.debounce.300ms="body" rows="6" placeholder="Type your message..."></textarea>
+                        @if ($counter)
+                            <x-sms-meter :counter="$counter" />
+                        @endif
                     </div>
 
                     @if ($resultMessage)

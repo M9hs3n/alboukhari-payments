@@ -64,15 +64,9 @@
         </div>
 
         <div class="form-group">
-            <label>
-                {{ __('send.body') }}
-                <span style="float:right;font-size:11px;color:{{ $counter['segments'] > 1 ? 'var(--color-danger)' : 'var(--color-success)' }};font-weight:700">
-                    📊 {{ $counter['length'] }}/{{ $counter['max_per_segment'] }}
-                    — <strong>{{ $counter['segments'] }} SMS</strong>
-                    ({{ $counter['encoding'] }})
-                </span>
-            </label>
+            <label>{{ __('send.body') }}</label>
             <textarea class="form-textarea" wire:model.live.debounce.300ms="body" rows="6"></textarea>
+            <x-sms-meter :counter="$counter" />
             <small class="text-muted">
                 <code>@{{Naam}}</code> <code>@{{month}}</code> <code>@{{المستحق}}</code> <code>@{{المتبقي}}</code>
                 @if ($groupByFamily)
