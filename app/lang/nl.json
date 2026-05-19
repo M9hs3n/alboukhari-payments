@@ -79,6 +79,17 @@
     "panel.last_payment": "Laatste betaling",
     "panel.last_message": "Laatste bericht",
     "panel.siblings": "Broers/zussen",
+    "panel.end_suspension": "Opschorting beëindigen",
+    "panel.open_ended": "onbepaald",
+
+    "confirm.delete_fee_override": "Tariefaanpassing voor :month :year (:amount €) verwijderen? Dit kan niet ongedaan worden gemaakt.",
+    "confirm.delete_surcharge": "Toeslag voor :month (:amount €) verwijderen? Dit kan niet ongedaan worden gemaakt.",
+    "confirm.cancel_suspension": "Opschorting beëindigen (:starts → :ends)? Reguliere facturering hervat onmiddellijk.",
+    "confirm.bulk_hide": ":count geselecteerde leerlingen verbergen uit het overzicht?",
+    "confirm.bulk_block": "Uitgaande berichten blokkeren voor :count geselecteerde leerlingen?",
+    "confirm.bulk_in_person": ":count geselecteerde leerlingen markeren als ter plaatse (worden overgeslagen bij bulkberichten)?",
+    "confirm.run_first_friday": "De eerste-vrijdag-herinnering nu naar alle onbetaalde families sturen?",
+    "confirm.run_mid_month": "De midden-van-de-maand-aanmaning nu versturen? Dit verstuurt SMS naar elke leerling met openstaand saldo.",
 
     "payment.title": "Nieuwe betaling",
     "payment.amount": "Bedrag",
