@@ -1,0 +1,159 @@
+<?php
+
+namespace App\Livewire;
+
+use App\Models\Student;
+use App\Services\FeeResolver;
+use App\Services\MonthStatusResolver;
+use Livewire\Component;
+use Livewire\WithPagination;
+
+class StudentsGrid extends Component
+{
+    use WithPagination;
+
+    public function paginationView(): string { return 'pagination::custom'; }
+    public function paginationSimpleView(): string { return 'pagination::custom'; }
+
+    public string $filterStatus = 'all';
+    public int $year;
+    public int $perPage = 100;
+
+    public ?int $openStudentId = null;
+
+    protected $queryString = ['filterStatus', 'year'];
+
+    public function mount()
+    {
+        $this->year = (int) date('Y');
+    }
+
+    public function updatingFilterStatus() { $this->resetPage(); }
+    public function updatingYear() { $this->resetPage(); }
+
+    public function openStudent(int $studentId)
+    {
+        $this->openStudentId = $studentId;
+        $this->dispatch('open-student-panel', studentId: $studentId);
+    }
+
+    public function closeStudent()
+    {
+        $this->openStudentId = null;
+    }
+
+    public function openPayment(int $studentId, int $month): void
+    {
+        $this->dispatch('open-payment-modal', studentId: $studentId, year: $this->year, month: $month);
+    }
+
+    protected $listeners = [
+        'payment-saved' => '$refresh',
+        'student-updated' => '$refresh',
+    ];
+
+    public function toggleFlag(int $studentId, string $flag)
+    {
+        $allowed = ['is_hidden', 'is_blocked_messages', 'is_in_person', 'excluded_from_send_all', 'included_in_send_all', 'allow_sms'];
+        if (!in_array($flag, $allowed, true)) return;
+
+        $student = Student::findOrFail($studentId);
+        $student->{$flag} = !$student->{$flag};
+        $student->save();
+
+        $this->dispatch('toast', message: __('common.flash_saved'));
+    }
+
+    public function bulkAction(array $ids, string $flag, bool $value)
+    {
+        $allowed = ['is_hidden', 'is_blocked_messages', 'is_in_person', 'excluded_from_send_all'];
+        if (!in_array($flag, $allowed, true)) return;
+        Student::whereIn('id', $ids)->update([$flag => $value]);
+        $this->dispatch('toast', message: count($ids) . ' ✓');
+    }
+
+    public function render()
+    {
+        $query = Student::query()
+            ->with(['family.students', 'payments', 'markers']);
+
+        match ($this->filterStatus) {
+            'hidden' => $query->where('is_hidden', true),
+            'blocked' => $query->where('is_blocked_messages', true),
+            'in_person' => $query->where('is_in_person', true),
+            'suspended' => $query->whereHas('suspensions', function ($q) {
+                $q->where('starts_at', '<=', now())
+                  ->where(function ($qq) {
+                      $qq->whereNull('ends_at')->orWhere('ends_at', '>=', now());
+                  });
+            }),
+            'visible' => $query->where('is_hidden', false),
+            default => null,
+        };
+
+        $students = $query->orderBy('id')->paginate($this->perPage);
+
+        $months = [
+            1 => __('Jan'), 2 => __('Feb'), 3 => __('Mar'), 4 => __('Apr'),
+            5 => __('May'), 6 => __('Jun'), 7 => __('Jul'), 8 => __('Aug'),
+            9 => __('Sep'), 10 => __('Oct'), 11 => __('Nov'), 12 => __('Dec'),
+        ];
+
+        $monthData = [];
+        $rowsJson = [];
+        foreach ($students as $student) {
+            $monthData[$student->id] = [];
+            $siblingsCount = $student->family_id ? max(0, $student->family->students->count() - 1) : 0;
+            $totalBalance = 0;
+            foreach (range(1, 12) as $m) {
+                $status = MonthStatusResolver::resolve($student, $this->year, $m);
+                $paid = FeeResolver::paidAmount($student, $this->year, $m);
+                $due = FeeResolver::dueAmount($student, $this->year, $m);
+                $methodIcon = '';
+                if ($paid > 0) {
+                    $lastPayment = $student->payments->where('period_year', $this->year)->where('period_month', $m)->whereIn('method', ['cash','bank'])->sortByDesc('paid_at')->first();
+                    $methodIcon = $lastPayment ? $lastPayment->methodIcon() : '';
+                } elseif ($status === 'legacy_zero') {
+                    $methodIcon = '🏦';
+                }
+                $monthData[$student->id][$m] = compact('status', 'paid', 'due', 'methodIcon');
+                if (in_array($status, ['unpaid', 'late', 'partial'])) {
+                    $totalBalance += ($due - $paid);
+                }
+            }
+
+            // Build search-haystack for client-side JS
+            $haystack = strtolower(implode(' ', array_filter([
+                $student->name,
+                $student->phone_primary_raw,
+                $student->phone_primary_e164,
+                $student->external_id,
+                (string) $student->id,
+            ])));
+
+            $rowsJson[$student->id] = [
+                'id' => $student->id,
+                'extId' => $student->external_id,
+                'name' => $student->name,
+                'phone' => $student->phone_primary_e164 ?: '',
+                'siblings' => $siblingsCount,
+                'balance' => round($totalBalance, 2),
+                'isHidden' => (bool) $student->is_hidden,
+                'isBlocked' => (bool) $student->is_blocked_messages,
+                'isInPerson' => (bool) $student->is_in_person,
+                'excludedSendAll' => (bool) $student->excluded_from_send_all,
+                'badge' => $student->statusBadge(),
+                'skipReason' => $student->skipReason(),
+                'haystack' => $haystack,
+            ];
+        }
+
+        return view('livewire.students-grid', [
+            'students' => $students,
+            'months' => $months,
+            'monthData' => $monthData,
+            'totalStudents' => Student::count(),
+            'rowsJson' => $rowsJson,
+        ])->layout('layouts.app');
+    }
+}

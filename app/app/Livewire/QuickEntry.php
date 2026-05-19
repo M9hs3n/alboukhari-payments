@@ -1,0 +1,120 @@
+<?php
+
+namespace App\Livewire;
+
+use App\Models\Payment;
+use App\Models\Student;
+use App\Services\FeeResolver;
+use Livewire\Component;
+
+class QuickEntry extends Component
+{
+    public string $search = '';
+    public ?int $selectedStudentId = null;
+    public int $year;
+    public int $month;
+
+    public ?float $amount = null;
+    public string $method = 'cash';
+    public string $note = '';
+
+    public int $sessionCount = 0;
+    public float $sessionTotal = 0;
+    public array $sessionLog = [];
+
+    public function mount()
+    {
+        $this->year = (int) date('Y');
+        $this->month = (int) date('n');
+    }
+
+    public function selectStudent(int $id)
+    {
+        $student = Student::findOrFail($id);
+        $this->selectedStudentId = $id;
+        $remaining = FeeResolver::balance($student, $this->year, $this->month);
+        $this->amount = $remaining > 0 ? $remaining : FeeResolver::dueAmount($student, $this->year, $this->month);
+        $this->method = 'cash';
+        $this->note = '';
+    }
+
+    public function setMethod(string $m): void
+    {
+        if (in_array($m, ['cash', 'bank'], true)) {
+            $this->method = $m;
+        }
+    }
+
+    public function save(): void
+    {
+        $this->validate([
+            'selectedStudentId' => 'required|exists:students,id',
+            'amount' => 'required|numeric|min:0',
+            'method' => 'required|in:cash,bank',
+        ]);
+
+        $payment = Payment::create([
+            'student_id' => $this->selectedStudentId,
+            'period_year' => $this->year,
+            'period_month' => $this->month,
+            'amount' => $this->amount,
+            'paid_at' => now()->format('Y-m-d'),
+            'method' => $this->method,
+            'note' => $this->note ?: null,
+        ]);
+
+        $student = Student::find($this->selectedStudentId);
+        $this->sessionCount++;
+        $this->sessionTotal += (float) $this->amount;
+        array_unshift($this->sessionLog, [
+            'student' => $student->name,
+            'amount' => (float) $this->amount,
+            'method' => $this->method,
+            'icon' => $payment->methodIcon(),
+            'time' => now()->format('H:i:s'),
+        ]);
+        $this->sessionLog = array_slice($this->sessionLog, 0, 15);
+
+        // Reset for next entry
+        $this->reset(['search', 'selectedStudentId', 'amount', 'method', 'note']);
+        $this->method = 'cash';
+
+        $this->dispatch('flash', message: "تم حفظ {$payment->amount}€ ✓ — التالي");
+        $this->dispatch('focus-search');
+    }
+
+    public function render()
+    {
+        $candidates = [];
+        if (strlen(trim($this->search)) >= 2) {
+            $s = trim($this->search);
+            $candidates = Student::query()
+                ->where(function ($q) use ($s) {
+                    $q->where('name', 'like', "%$s%")
+                      ->orWhere('phone_primary_e164', 'like', "%$s%")
+                      ->orWhere('external_id', $s);
+                })
+                ->where('is_hidden', false)
+                ->limit(8)
+                ->get();
+        }
+
+        $months = [
+            1 => 'يناير', 2 => 'فبراير', 3 => 'مارس', 4 => 'أبريل',
+            5 => 'مايو', 6 => 'يونيو', 7 => 'يوليو', 8 => 'أغسطس',
+            9 => 'سبتمبر', 10 => 'أكتوبر', 11 => 'نوفمبر', 12 => 'ديسمبر',
+        ];
+
+        $selectedStudent = $this->selectedStudentId ? Student::find($this->selectedStudentId) : null;
+        $dueAmount = $selectedStudent ? FeeResolver::dueAmount($selectedStudent, $this->year, $this->month) : 0;
+        $paidSoFar = $selectedStudent ? FeeResolver::paidAmount($selectedStudent, $this->year, $this->month) : 0;
+
+        return view('livewire.quick-entry', [
+            'candidates' => $candidates,
+            'months' => $months,
+            'selectedStudent' => $selectedStudent,
+            'dueAmount' => $dueAmount,
+            'paidSoFar' => $paidSoFar,
+        ])->layout('layouts.app');
+    }
+}

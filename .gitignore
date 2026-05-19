@@ -1,0 +1,44 @@
+# ============================================
+# Laravel app/
+# ============================================
+app/vendor/
+app/node_modules/
+app/.env
+app/.env.backup
+app/.env.production
+app/storage/*.key
+app/storage/logs/*.log
+app/storage/framework/cache/
+app/storage/framework/sessions/
+app/storage/framework/views/
+app/storage/framework/testing/
+app/storage/app/public/
+app/bootstrap/cache/*.php
+!app/bootstrap/cache/.gitkeep
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Project-specific — NEVER commit real student data
+*.xlsx
+*.xls
+*.csv
+/app/database/dumps/
+/app/storage/app/imports/
+/app/storage/app/exports/
+
+# Backups / dumps
+*.sql
+*.sql.gz
+*.dump
+
+# Anything explicitly tagged as data
+data/
+*-real-data*
+*-real_data*
+*production-data*
