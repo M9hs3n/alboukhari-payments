@@ -309,6 +309,135 @@ html[dir="rtl"] .topbar .search-global {
 .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
 @media (max-width: 640px) { .form-row.cols-2, .form-row.cols-3 { grid-template-columns: 1fr; } }
 
+/* ============================================
+   Dropzone (file upload)
+   ============================================ */
+.dropzone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 140px;
+    padding: 18px;
+    border: 1.5px dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-alt);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    text-align: center;
+}
+.dropzone:hover { border-color: var(--color-primary); background: var(--color-primary-soft); }
+.dropzone:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.18);
+}
+.dropzone.is-dragging {
+    border-color: var(--color-primary);
+    border-style: solid;
+    background: var(--color-primary-soft);
+    box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+.dropzone.has-file {
+    background: var(--color-surface);
+    border-style: solid;
+    border-color: var(--color-border);
+    cursor: default;
+    text-align: start;
+}
+.dropzone-input {
+    position: absolute;
+    inset: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+.dropzone-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-text);
+}
+.dropzone-empty strong { font-size: 14px; font-weight: 600; }
+.dropzone-icon { color: var(--color-primary); }
+.dropzone-file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+.dropzone-file-icon { color: var(--color-primary); flex: 0 0 auto; }
+.dropzone-file-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.dropzone-file-meta strong {
+    font-size: 13px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dropzone-file-meta small { font-size: 11px; }
+.dropzone-remove { flex: 0 0 auto; color: var(--color-text-muted); }
+.dropzone-remove:hover { color: var(--color-danger); background: var(--color-danger-soft); }
+.dropzone-submitting { display: inline-flex; align-items: center; gap: 8px; }
+.dropzone-spinner {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: white;
+    animation: dropzone-spin 0.7s linear infinite;
+}
+@keyframes dropzone-spin { to { transform: rotate(360deg); } }
+
+.import-help {
+    margin-bottom: 14px;
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+.import-help summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-text);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+}
+.import-help summary::-webkit-details-marker { display: none; }
+.import-help summary::before {
+    content: "▸";
+    display: inline-block;
+    font-size: 10px;
+    color: var(--color-text-muted);
+    transition: transform 0.15s ease;
+}
+.import-help[open] summary::before { transform: rotate(90deg); }
+html[dir="rtl"] .import-help summary::before { content: "◂"; }
+html[dir="rtl"] .import-help[open] summary::before { transform: rotate(-90deg); }
+.import-help ul {
+    margin: 10px 0 0;
+    padding-inline-start: 18px;
+    line-height: 1.7;
+}
+.import-help code { background: white; padding: 1px 4px; border-radius: 4px; }
+
+.alert-error {
+    padding: 12px 14px;
+    background: var(--color-danger-soft);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    color: #7f1d1d;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
 /* Method toggle */
 .method-toggle { display: flex; gap: 8px; }
 .method-toggle button {
