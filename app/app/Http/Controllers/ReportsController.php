@@ -7,6 +7,7 @@ use App\Models\MessageLog;
 use App\Models\Payment;
 use App\Models\Student;
 use App\Services\FeeResolver;
+use App\Services\MonthNames;
 use App\Services\MonthStatusResolver;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -79,11 +80,7 @@ class ReportsController extends Controller
                 ->sum('cost');
         }
 
-        $months = [
-            1 => 'يناير', 2 => 'فبراير', 3 => 'مارس', 4 => 'أبريل',
-            5 => 'مايو', 6 => 'يونيو', 7 => 'يوليو', 8 => 'أغسطس',
-            9 => 'سبتمبر', 10 => 'أكتوبر', 11 => 'نوفمبر', 12 => 'ديسمبر',
-        ];
+        $months = MonthNames::full();
 
         return view('reports', compact(
             'year', 'month', 'months',

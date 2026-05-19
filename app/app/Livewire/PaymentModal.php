@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Payment;
 use App\Models\Student;
 use App\Services\FeeResolver;
+use App\Services\MonthNames;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -24,15 +25,8 @@ class PaymentModal extends Component
     public array $existingPayments = [];
 
     public string $studentName = '';
-    public string $monthName = '';
     public float $dueAmount = 0;
     public float $paidSoFar = 0;
-
-    private const MONTH_NAMES = [
-        1 => 'يناير', 2 => 'فبراير', 3 => 'مارس', 4 => 'أبريل',
-        5 => 'مايو', 6 => 'يونيو', 7 => 'يوليو', 8 => 'أغسطس',
-        9 => 'سبتمبر', 10 => 'أكتوبر', 11 => 'نوفمبر', 12 => 'ديسمبر',
-    ];
 
     #[On('open-payment-modal')]
     public function open(int $studentId, int $year, int $month): void
@@ -42,7 +36,6 @@ class PaymentModal extends Component
         $this->year = $year;
         $this->month = $month;
         $this->studentName = $student->name;
-        $this->monthName = self::MONTH_NAMES[$month] ?? $month;
 
         $this->dueAmount = FeeResolver::dueAmount($student, $year, $month);
         $this->paidSoFar = FeeResolver::paidAmount($student, $year, $month);
@@ -74,7 +67,7 @@ class PaymentModal extends Component
 
     public function close(): void
     {
-        $this->reset(['isOpen', 'studentId', 'year', 'month', 'amount', 'method', 'note', 'paid_at', 'editingPaymentId', 'existingPayments', 'studentName', 'monthName', 'dueAmount', 'paidSoFar']);
+        $this->reset(['isOpen', 'studentId', 'year', 'month', 'amount', 'method', 'note', 'paid_at', 'editingPaymentId', 'existingPayments', 'studentName', 'dueAmount', 'paidSoFar']);
         $this->method = 'cash';
     }
 
@@ -153,6 +146,7 @@ class PaymentModal extends Component
 
     public function render()
     {
-        return view('livewire.payment-modal');
+        $monthName = $this->month ? (MonthNames::full()[$this->month] ?? '') : '';
+        return view('livewire.payment-modal', compact('monthName'));
     }
 }
