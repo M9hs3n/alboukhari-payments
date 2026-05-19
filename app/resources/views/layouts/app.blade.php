@@ -10,8 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? __('app_name') }}</title>
 
-    {{-- Alpine.js (يدعم Livewire 4) --}}
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {{-- Alpine.js is bundled inside Livewire 4 — do NOT load it separately or you get a double-init conflict that breaks wire:click and other handlers. --}}
 
     {{-- CSS مخصّص --}}
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=2.1">
