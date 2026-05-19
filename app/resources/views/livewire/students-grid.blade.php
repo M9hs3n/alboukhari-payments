@@ -58,9 +58,9 @@
         <strong x-text="`${selectedIds.length} ${selectedIds.length === 1 ? '{{ __('Student') }}' : '{{ __('Students') }}'}`"></strong>
         <span style="opacity:0.7">{{ __('selected') }}</span>
         <span style="flex:1"></span>
-        <button class="btn btn-sm" @click="bulk('is_hidden', true)">🙈 {{ __('actions.bulk_hide') }}</button>
-        <button class="btn btn-sm" @click="bulk('is_blocked_messages', true)">🚫 {{ __('actions.bulk_block') }}</button>
-        <button class="btn btn-sm" @click="bulk('is_in_person', true)">🏠 {{ __('In-person') }}</button>
+        <button class="btn btn-sm" @click="bulk('is_hidden', true, @js(__('confirm.bulk_hide', ['count' => '__COUNT__'])))">🙈 {{ __('actions.bulk_hide') }}</button>
+        <button class="btn btn-sm" @click="bulk('is_blocked_messages', true, @js(__('confirm.bulk_block', ['count' => '__COUNT__'])))">🚫 {{ __('actions.bulk_block') }}</button>
+        <button class="btn btn-sm" @click="bulk('is_in_person', true, @js(__('confirm.bulk_in_person', ['count' => '__COUNT__'])))">🏠 {{ __('In-person') }}</button>
         <button class="btn btn-sm btn-danger" @click="clearSelection()">✕ {{ __('actions.bulk_clear') }}</button>
     </div>
 
@@ -361,9 +361,10 @@
                 rows.forEach(r => tbody.appendChild(r));
             },
 
-            bulk(flag, value) {
+            bulk(flag, value, promptTemplate) {
                 if (this.selectedIds.length === 0) return;
-                if (!confirm(`Apply ${flag}=${value} to ${this.selectedIds.length} students?`)) return;
+                const msg = (promptTemplate || '').replace('__COUNT__', this.selectedIds.length);
+                if (msg && !confirm(msg)) return;
                 @this.bulkAction(this.selectedIds, flag, value);
                 this.clearSelection();
             },

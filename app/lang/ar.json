@@ -79,6 +79,17 @@
     "panel.last_payment": "آخر دفعة",
     "panel.last_message": "آخر رسالة",
     "panel.siblings": "الإخوة",
+    "panel.end_suspension": "إنهاء العزل",
+    "panel.open_ended": "بدون نهاية",
+
+    "confirm.delete_fee_override": "حذف الرسم الخاص لشهر :month :year (:amount €)؟ لا يمكن التراجع.",
+    "confirm.delete_surcharge": "حذف الرسم الإضافي لشهر :month (:amount €)؟ لا يمكن التراجع.",
+    "confirm.cancel_suspension": "إنهاء العزل (:starts → :ends)؟ سيستأنف احتساب الرسوم العادية فوراً.",
+    "confirm.bulk_hide": "إخفاء :count طالب محدّد من الجدول؟",
+    "confirm.bulk_block": "منع إرسال الرسائل إلى :count طالب محدّد؟",
+    "confirm.bulk_in_person": "وضع علامة مكاني على :count طالب محدّد (سيُستثنون من الإرسال الجماعي)؟",
+    "confirm.run_first_friday": "إرسال تذكير أول جمعة الآن لجميع العائلات غير المدفوعة؟",
+    "confirm.run_mid_month": "إرسال إشعار التأخر منتصف الشهر الآن؟ سيُرسَل SMS لكل طالب لديه رصيد متبقٍّ.",
 
     "payment.title": "دفعة جديدة",
     "payment.amount": "المبلغ",

@@ -79,6 +79,17 @@
     "panel.last_payment": "Last payment",
     "panel.last_message": "Last message",
     "panel.siblings": "Siblings",
+    "panel.end_suspension": "End suspension",
+    "panel.open_ended": "open-ended",
+
+    "confirm.delete_fee_override": "Delete fee override for :month :year (:amount €)? This cannot be undone.",
+    "confirm.delete_surcharge": "Delete surcharge for :month (:amount €)? This cannot be undone.",
+    "confirm.cancel_suspension": "End suspension (:starts → :ends)? Regular billing resumes immediately.",
+    "confirm.bulk_hide": "Hide :count selected students from the grid?",
+    "confirm.bulk_block": "Block outgoing messages for :count selected students?",
+    "confirm.bulk_in_person": "Mark :count selected students as in-person (they will be skipped by bulk sends)?",
+    "confirm.run_first_friday": "Send the first-Friday reminder right now to every unpaid family?",
+    "confirm.run_mid_month": "Send the mid-month late notice right now? This will trigger SMS to every student still owing.",
 
     "payment.title": "New Payment",
     "payment.amount": "Amount",

@@ -454,10 +454,10 @@
                 <p class="field-help mb-3">{{ __('Force-run a reminder right now without waiting for the schedule.') }}</p>
                 <form method="POST" action="{{ route('reminders.trigger') }}" style="display:flex;gap:8px">
                     @csrf
-                    <button type="submit" name="type" value="first_friday" class="btn btn-warning" onclick="return confirm('Send first-friday reminder now?')">
+                    <button type="submit" name="type" value="first_friday" class="btn btn-warning" onclick="return confirm(@js(__('confirm.run_first_friday')))">
                         🟢 {{ __('Run: First Friday') }}
                     </button>
-                    <button type="submit" name="type" value="mid_month_auto" class="btn btn-danger" onclick="return confirm('Send mid-month late notice now?')">
+                    <button type="submit" name="type" value="mid_month_auto" class="btn btn-danger" onclick="return confirm(@js(__('confirm.run_mid_month')))">
                         🔴 {{ __('Run: Mid-month') }}
                     </button>
                 </form>

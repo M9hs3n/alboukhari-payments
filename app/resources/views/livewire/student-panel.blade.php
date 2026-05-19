@@ -115,7 +115,7 @@
                                 <td style="padding:6px">{{ $months[$ov->period_month] }} {{ $ov->period_year }}</td>
                                 <td style="padding:6px;text-align:center;font-weight:700">{{ number_format($ov->amount, 2) }} €</td>
                                 <td style="padding:6px;font-size:11px;color:var(--color-text-muted)">{{ $ov->reason }}</td>
-                                <td><button class="btn btn-sm btn-soft-danger" wire:click="removeOverride({{ $ov->id }})">🗑️</button></td>
+                                <td><button class="btn btn-sm btn-soft-danger" wire:click="removeOverride({{ $ov->id }})" wire:confirm="{{ __('confirm.delete_fee_override', ['month' => $months[$ov->period_month], 'year' => $ov->period_year, 'amount' => number_format($ov->amount, 2)]) }}" title="{{ __('common.delete') }}">🗑️</button></td>
                             </tr>
                         @endforeach
                     </table>
@@ -141,7 +141,7 @@
                                 <td style="padding:6px">{{ $months[$sur->period_month] }}</td>
                                 <td style="padding:6px;text-align:center;font-weight:700">{{ number_format($sur->amount, 2) }} €</td>
                                 <td style="padding:6px;font-size:11px">{{ $sur->reason }}</td>
-                                <td><button class="btn btn-sm btn-soft-danger" wire:click="removeSurcharge({{ $sur->id }})">🗑️</button></td>
+                                <td><button class="btn btn-sm btn-soft-danger" wire:click="removeSurcharge({{ $sur->id }})" wire:confirm="{{ __('confirm.delete_surcharge', ['month' => $months[$sur->period_month], 'amount' => number_format($sur->amount, 2)]) }}" title="{{ __('common.delete') }}">🗑️</button></td>
                             </tr>
                         @endforeach
                     </table>
@@ -181,11 +181,18 @@
                 <h4>⏸️ {{ __('Temporary suspension') }}</h4>
                 @php $active = $student->activeSuspension(); @endphp
                 @if ($active)
+                    @php
+                        $suspendStarts = $active->starts_at->format('Y-m-d');
+                        $suspendEnds = $active->ends_at ? $active->ends_at->format('Y-m-d') : __('panel.open_ended');
+                    @endphp
                     <div class="pill pill-warning" style="display:block;padding:10px 12px;margin-bottom:10px">
-                        Suspended from <strong>{{ $active->starts_at->format('Y-m-d') }}</strong> to
-                        <strong>{{ $active->ends_at ? $active->ends_at->format('Y-m-d') : 'open-ended' }}</strong>
+                        Suspended from <strong>{{ $suspendStarts }}</strong> to
+                        <strong>{{ $suspendEnds }}</strong>
                         — {{ $active->reason ?: '' }}
-                        <button class="btn btn-sm btn-danger" wire:click="removeSuspension({{ $active->id }})" style="margin-inline-start:auto">Cancel</button>
+                        <button class="btn btn-sm btn-danger"
+                                wire:click="removeSuspension({{ $active->id }})"
+                                wire:confirm="{{ __('confirm.cancel_suspension', ['starts' => $suspendStarts, 'ends' => $suspendEnds]) }}"
+                                style="margin-inline-start:auto">{{ __('panel.end_suspension') }}</button>
                     </div>
                 @endif
                 <div class="form-row cols-2">
