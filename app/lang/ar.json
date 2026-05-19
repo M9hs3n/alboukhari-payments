@@ -206,5 +206,16 @@
     "shortcuts.close_panels":  "إغلاق اللوحات والنوافذ المفتوحة",
     "shortcuts.cash":  "الدفع نقداً",
     "shortcuts.bank":  "الدفع عبر البنك",
-    "shortcuts.save_and_next":  "حفظ والانتقال للتالي"
+    "shortcuts.save_and_next":  "حفظ والانتقال للتالي",
+    "sms_meter.sms_short":  "رسالة",
+    "sms_meter.encoding_gsm":  "GSM-7",
+    "sms_meter.encoding_unicode":  "Unicode",
+    "sms_meter.encoding_gsm_hint":  "أحرف SMS القياسية — 160 حرفًا لكل رسالة.",
+    "sms_meter.encoding_unicode_hint":  "تحتوي على أحرف غير لاتينية — 70 حرفًا فقط لكل رسالة.",
+    "sms_meter.hint_empty":  "اكتب رسالتك — سيظهر العدّاد عدد الرسائل المحتسبة.",
+    "sms_meter.hint_room":  "تبقّى :remaining حرفًا في هذه الرسالة.",
+    "sms_meter.hint_close":  "تبقّى :remaining حرفًا فقط — سطر إضافي وستصبح رسالتين.",
+    "sms_meter.hint_overflow":  "هذه :segments رسائل — احذف :chars حرفًا لتصبح :reduce رسالة.",
+    "sms_meter.aria_chars":  "تم استخدام :length من :total حرفًا",
+    "sms_meter.aria_segments":  "تكلفة :count رسالة"
 }

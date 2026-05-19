@@ -206,5 +206,16 @@
     "shortcuts.close_panels":  "Close open panels and modals",
     "shortcuts.cash":  "Pay with cash",
     "shortcuts.bank":  "Pay by bank",
-    "shortcuts.save_and_next":  "Save and move on"
+    "shortcuts.save_and_next":  "Save and move on",
+    "sms_meter.sms_short":  "SMS",
+    "sms_meter.encoding_gsm":  "GSM-7",
+    "sms_meter.encoding_unicode":  "Unicode",
+    "sms_meter.encoding_gsm_hint":  "Standard SMS character set — 160 characters per SMS.",
+    "sms_meter.encoding_unicode_hint":  "Non-Latin characters detected — only 70 characters per SMS.",
+    "sms_meter.hint_empty":  "Type your message — the counter will show how many SMS it becomes.",
+    "sms_meter.hint_room":  ":remaining characters left in this SMS.",
+    "sms_meter.hint_close":  "Only :remaining characters left — one more line and this becomes 2 SMS.",
+    "sms_meter.hint_overflow":  "This is :segments SMS — remove :chars characters to fit in :reduce SMS.",
+    "sms_meter.aria_chars":  ":length of :total characters used",
+    "sms_meter.aria_segments":  "Costs :count SMS"
 }

@@ -1005,102 +1005,94 @@ html[dir="rtl"] .side-panel { animation: slideInLeft 0.25s ease-out; }
 .modal-box { animation: scaleIn 0.2s ease-out; }
 
 /* ============================================
-   Keyboard shortcuts helper
+   SMS meter (campaign send + template editor)
    ============================================ */
-.kbd-help-btn {
-    appearance: none;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: 1px solid var(--color-border);
+.sms-meter {
     background: var(--color-surface-alt);
-    color: var(--color-text-muted);
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 13px;
-    line-height: 1;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    margin-inline-start: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+    transition: border-color 0.2s ease, background 0.2s ease;
 }
-.kbd-help-btn:hover {
-    color: var(--color-primary);
-    background: var(--color-primary-soft);
-    border-color: var(--color-primary);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-xs);
-}
-.kbd-help-btn:focus-visible {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.18);
-}
+.sms-meter--success { border-color: #a7f3d0; background: linear-gradient(180deg, #f0fdf4, #ffffff); }
+.sms-meter--warning { border-color: #fcd34d; background: linear-gradient(180deg, #fffbeb, #ffffff); }
+.sms-meter--danger  { border-color: #fca5a5; background: linear-gradient(180deg, #fef2f2, #ffffff); }
 
-.shortcuts-modal { width: 520px; }
-.shortcuts-modal .modal-body { padding: 18px 22px 14px; }
-
-.shortcut-group + .shortcut-group { margin-top: 18px; }
-.shortcut-group h4 {
-    margin: 0 0 10px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-text-muted);
-}
-
-.shortcut-list {
-    margin: 0;
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    column-gap: 18px;
-    row-gap: 8px;
+.sms-meter__head {
+    display: flex;
     align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
-.shortcut-list dt {
-    margin: 0;
+
+.sms-meter__count {
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    letter-spacing: 0.01em;
+}
+.sms-meter__count strong { font-size: 17px; color: var(--color-text); font-weight: 700; }
+.sms-meter__sep { margin: 0 4px; color: var(--color-text-soft); }
+.sms-meter__cap { font-weight: 500; }
+
+.sms-meter__pill {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    justify-self: start;
-}
-.shortcut-list dd {
-    margin: 0;
-    color: var(--color-text);
-    font-size: 13px;
-}
-
-kbd {
-    display: inline-block;
-    min-width: 24px;
-    padding: 3px 8px;
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--color-text);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border-strong);
-    border-bottom-width: 2px;
-    border-radius: 5px;
-    text-align: center;
-    box-shadow: var(--shadow-xs);
-}
-.kbd-plus {
-    color: var(--color-text-soft);
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 999px;
     font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+.sms-meter__pill-num { font-size: 13px; line-height: 1; }
+.sms-meter__pill--muted   { background: var(--color-border);        color: var(--color-text-muted); }
+.sms-meter__pill--success { background: var(--color-success-soft);  color: var(--color-success); }
+.sms-meter__pill--warning { background: var(--color-warning-soft);  color: var(--color-warning); }
+.sms-meter__pill--danger  { background: var(--color-danger-soft);   color: var(--color-danger); }
+
+.sms-meter__encoding {
+    margin-inline-start: auto;
+    font-size: 10px;
     font-weight: 600;
+    color: var(--color-text-muted);
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    cursor: help;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.shortcut-tip {
-    margin: 18px 0 0;
-    padding: 10px 12px;
-    background: var(--color-primary-soft);
-    color: var(--color-primary-text);
-    border-radius: var(--radius);
-    font-size: 12px;
+.sms-meter__bar {
+    block-size: 8px;
+    background: var(--color-border);
+    border-radius: 999px;
+    overflow: hidden;
+}
+.sms-meter__fill {
+    block-size: 100%;
+    border-radius: 999px;
+    background: var(--color-text-soft);
+    transition: inline-size 0.18s ease, background 0.18s ease;
+}
+.sms-meter--success .sms-meter__fill { background: linear-gradient(90deg, var(--color-success), #34d399); }
+.sms-meter--warning .sms-meter__fill { background: linear-gradient(90deg, var(--color-warning), #f59e0b); }
+.sms-meter--danger  .sms-meter__fill { background: linear-gradient(90deg, var(--color-danger),  #ef4444); }
+
+.sms-meter__hint {
+    color: var(--color-text-muted);
+    font-size: 11px;
     line-height: 1.5;
 }
+.sms-meter__hint-warn { color: var(--color-danger); font-weight: 600; }
+.sms-meter--warning .sms-meter__hint-warn { color: #92400e; }
 
 /* RTL adjustments */
 html[dir="rtl"] body { font-family: 'Cairo', system-ui, sans-serif; }
