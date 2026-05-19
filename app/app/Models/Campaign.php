@@ -37,16 +37,9 @@ class Campaign extends Model
 
     public function typeLabel(): string
     {
-        return match ($this->type) {
-            'send_all' => 'إرسال جماعي',
-            'unpaid_by_month' => 'لمن لم يدفع شهر',
-            'late_mid_month' => 'للمتأخرين',
-            'paid_less_than' => 'لمن دفع أقل من',
-            'balance_above' => 'لمن متبقي عليه أكثر من',
-            'specific_students' => 'لطلاب محددين',
-            'first_friday' => 'أول جمعة (تلقائي)',
-            'mid_month_auto' => '15 من الشهر (تلقائي)',
-            default => $this->type,
-        };
+        $key = "campaigns.type.{$this->type}";
+        $translated = __($key);
+
+        return $translated === $key ? $this->type : $translated;
     }
 }

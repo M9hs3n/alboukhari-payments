@@ -22,7 +22,7 @@
 
     <div class="kpi-grid">
         <div class="kpi info">
-            <div class="label">📲 {{ __('reports.today_messages') }}</div>
+            <div class="label">📲 {{ __('reports.todays_messages') }}</div>
             <div class="value">{{ $todayMessages }}</div>
             <div class="meta">{{ number_format($todayMessagesCost, 2) }} €</div>
         </div>
@@ -74,11 +74,11 @@
             <table class="students-grid" style="font-size:12px">
                 <thead>
                     <tr>
-                        <th style="text-align:start;padding:8px">{{ __('reports.month') }}</th>
+                        <th style="text-align:start;padding:8px">{{ __('common.month') }}</th>
                         <th>💵</th>
                         <th>🏦</th>
                         <th>{{ __('common.total') }}</th>
-                        <th>📲 {{ __('reports.cost') }}</th>
+                        <th>📲 {{ __('common.cost') }}</th>
                     </tr>
                 </thead>
                 <tbody>
