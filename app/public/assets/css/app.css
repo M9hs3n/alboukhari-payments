@@ -1004,95 +1004,77 @@ html[dir="rtl"] .side-panel { animation: slideInLeft 0.25s ease-out; }
 .side-panel-backdrop, .modal-backdrop { animation: fadeIn 0.2s; }
 .modal-box { animation: scaleIn 0.2s ease-out; }
 
-/* ============================================
-   SMS meter (campaign send + template editor)
-   ============================================ */
-.sms-meter {
-    background: var(--color-surface-alt);
+/* Quick Entry — candidate list */
+.qe-results {
+    margin-top: 12px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
-    padding: 10px 12px;
-    margin-top: 6px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 12px;
-    transition: border-color 0.2s ease, background 0.2s ease;
-}
-.sms-meter--success { border-color: #a7f3d0; background: linear-gradient(180deg, #f0fdf4, #ffffff); }
-.sms-meter--warning { border-color: #fcd34d; background: linear-gradient(180deg, #fffbeb, #ffffff); }
-.sms-meter--danger  { border-color: #fca5a5; background: linear-gradient(180deg, #fef2f2, #ffffff); }
-
-.sms-meter__head {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.sms-meter__count {
-    font-variant-numeric: tabular-nums;
-    color: var(--color-text-muted);
-    letter-spacing: 0.01em;
-}
-.sms-meter__count strong { font-size: 17px; color: var(--color-text); font-weight: 700; }
-.sms-meter__sep { margin: 0 4px; color: var(--color-text-soft); }
-.sms-meter__cap { font-weight: 500; }
-
-.sms-meter__pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-.sms-meter__pill-num { font-size: 13px; line-height: 1; }
-.sms-meter__pill--muted   { background: var(--color-border);        color: var(--color-text-muted); }
-.sms-meter__pill--success { background: var(--color-success-soft);  color: var(--color-success); }
-.sms-meter__pill--warning { background: var(--color-warning-soft);  color: var(--color-warning); }
-.sms-meter__pill--danger  { background: var(--color-danger-soft);   color: var(--color-danger); }
-
-.sms-meter__encoding {
-    margin-inline-start: auto;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    padding: 2px 8px;
-    border-radius: 999px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    cursor: help;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.sms-meter__bar {
-    block-size: 8px;
-    background: var(--color-border);
-    border-radius: 999px;
     overflow: hidden;
+    background: var(--color-surface);
 }
-.sms-meter__fill {
-    block-size: 100%;
-    border-radius: 999px;
-    background: var(--color-text-soft);
-    transition: inline-size 0.18s ease, background 0.18s ease;
+.qe-result {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--color-border);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: var(--color-surface);
+    transition: background 0.12s ease, box-shadow 0.12s ease;
+    outline: none;
 }
-.sms-meter--success .sms-meter__fill { background: linear-gradient(90deg, var(--color-success), #34d399); }
-.sms-meter--warning .sms-meter__fill { background: linear-gradient(90deg, var(--color-warning), #f59e0b); }
-.sms-meter--danger  .sms-meter__fill { background: linear-gradient(90deg, var(--color-danger),  #ef4444); }
-
-.sms-meter__hint {
+.qe-result:last-child { border-bottom: 0; }
+.qe-result:hover,
+.qe-result.is-active {
+    background: var(--color-primary-soft);
+}
+.qe-result.is-active {
+    box-shadow: inset 3px 0 0 var(--color-primary);
+}
+html[dir="rtl"] .qe-result.is-active {
+    box-shadow: inset -3px 0 0 var(--color-primary);
+}
+.qe-result:focus-visible {
+    background: var(--color-primary-soft);
+    box-shadow: inset 0 0 0 2px var(--color-primary);
+}
+.qe-hint {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: var(--color-surface-alt);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius);
     color: var(--color-text-muted);
-    font-size: 11px;
-    line-height: 1.5;
+    font-size: 13px;
+    text-align: center;
 }
-.sms-meter__hint-warn { color: var(--color-danger); font-weight: 600; }
-.sms-meter--warning .sms-meter__hint-warn { color: #92400e; }
+.qe-hint kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid var(--color-border-strong);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    background: var(--color-surface);
+    font-size: 11px;
+    font-family: ui-monospace, monospace;
+    color: var(--color-text);
+}
+.qe-search-wrap { position: relative; }
+.qe-search-spinner {
+    position: absolute;
+    inset-inline-end: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--color-border-strong);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: qeSpin 0.7s linear infinite;
+    pointer-events: none;
+}
+@keyframes qeSpin { to { transform: translateY(-50%) rotate(360deg); } }
 
 /* RTL adjustments */
 html[dir="rtl"] body { font-family: 'Cairo', system-ui, sans-serif; }

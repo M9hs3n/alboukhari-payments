@@ -14,7 +14,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     {{-- CSS مخصّص --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=2.0">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=2.1">
 
     @livewireStyles
 </head>
